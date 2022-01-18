@@ -1,0 +1,82 @@
+\documentclass[10pt, a4paper, titlepage]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[nottoc,numbib]{tocbibind}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{backnaur}
+\usepackage{tikz}
+\usepackage{enumerate}
+\usepackage{import}
+\usepackage{bussproofs}
+\usetikzlibrary{intersections, calc, arrows.meta}
+\hypersetup{
+    colorlinks = true,
+    linkcolor = cyan
+}
+% ref: https://oratio.hatenablog.com/entry/2018/12/12/013748
+\definecolor{OliveGreen}{rgb}{0.0,0.6,0.0}
+\definecolor{Magenta}{cmyk}{0, 1, 0, 0}
+\definecolor{colFunc}{rgb}{1,0.07,0.54}
+\definecolor{CadetBlue}{cmyk}{0.62,0.57,0.23,0}
+\definecolor{Brown}{cmyk}{0,0.81,1,0.60}
+\definecolor{colID}{rgb}{0.63,0.44,0}
+\lstset{
+    language={Python},
+    basicstyle={\ttfamily\small},
+    backgroundcolor={\color[gray]{.95}},
+    keywordstyle={\color{blue}},
+    commentstyle={\color{OliveGreen}},
+    stringstyle=\color{Magenta},
+    frame=single,
+    numbers=left,
+    numberstyle={\ttfamily\small},
+    breaklines=true,
+    breakindent = 10pt,
+    tabsize=2,
+    captionpos=t,
+}
+
+% Title Page
+\title{Bachelor Thesis \\ TODO: TITLE}
+\author{
+03190413 Takemaru Kadoi 
+\\[1cm]
+{\small Supervisor: Prof. Masahiro Fujita},
+{\small Advisor: Assistant Prof. Taro Sekiyama}
+\\[1cm]
+{\small University of Tokyo, Department of Information and Communication Engineering}}
+\date{\today}
+
+\begin{document}
+
+% header
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\section{Acknowledgment} % Thanks
+This research was supported by Prof. Fujita and Assistant Prof. Sekiyama. \\
+I thank my colleagues at University of Tokyo, Miyasaka-san, Koike-san, Yu-san, Nagasawa-san, and Yi-san.
+
+I also show my gratitude to my good friends, Saeki, Arahata, Hori, Naito, Chen, and Sakura.
+
+\section{Abstract} % overview of the research topic
+
+I \cite{gulwani2017program}
+\section{Introduction} % background(problem, motivation) & preliminary topics
+\section{Method} % my approach to a problem
+\section{Evaluation} % quantitative result 
+\section{Conclusion} % qualitative result and future work
+\bibliographystyle{unsrt}
+\bibliography{
+    synthesis
+}
+
+\end{document}
