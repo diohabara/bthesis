@@ -1,19 +1,20 @@
-\documentclass[10pt, a4paper, titlepage]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[nottoc,numbib]{tocbibind}
+\documentclass[12pt, a4paper, titlepage]{report}
 \usepackage[dvipdfmx]{graphicx}
-\usepackage{pdfpages}
-\usepackage{hyperref}
-\usepackage{listings}
-\usepackage{amsmath}
+\usepackage[nottoc,numbib]{tocbibind}
+\usepackage[utf8]{inputenc}
 \usepackage{algorithm}
-\usepackage{listings}
-\usepackage{color}
+\usepackage{amsmath}
 \usepackage{backnaur}
-\usepackage{tikz}
-\usepackage{enumerate}
-\usepackage{import}
 \usepackage{bussproofs}
+\usepackage{color}
+\usepackage{enumerate}
+\usepackage{hyperref}
+\usepackage{import}
+\usepackage{listings}
+\usepackage{pdfpages}
+\usepackage{tikz}
+\usepackage{mathptmx}
+\usepackage{minted}
 \usetikzlibrary{intersections, calc, arrows.meta}
 \hypersetup{
   colorlinks = true,
@@ -62,31 +63,36 @@
 \tableofcontents
 \newpage
 
-\section{Acknowledgment}
-This research was supported by Prof. Fujita and Assistant Prof. Sekiyama. \\
-I thank my colleagues at University of Tokyo, Miyasaka-san, Koike-san, Yu-san, Nagasawa-san, and Yi-san.
+\chapter*{Acknowledgment}
+This research was supervised by Prof. Fujita at the University of Tokyo and supported by Assistant Prof. Sekiyama at National Institute of Technology. \\
+I thank my colleagues at the University of Tokyo, Miyasaka-san, Koike-san, Yu-san, Nagasawa-san, and Yi-san.
+% TODO: add twitter account
+I also show my gratitude to my good friends, hnkz, Akio, Saeki, Arahata, Hori, Naito, Chen, and Sakura.
 
-I also show my gratitude to my good friends, Saeki, Arahata, Hori, Naito, Chen, and Sakura.
-
-\section{Abstract} % overview of the research topic
-
+\chapter{Abstract} % overview of the research topic
 \cite{gulwani2017program}
 
-\section{Introduction}
-  \subsection{Motivation}
-  \subsection{Program Synthesis}
-  \subsection{Existing Methods}
-  \subsection{Type and Effect System}
+\chapter{Introduction}
+  \section{Motivation}
+  \section{Program Synthesis}
+  \section{Existing Methods}
+  \section{Type and Effect System}
 
-\section{Method} % my approach to a problem
-  \subsection{Syntax}
-  \subsection{Semantics}
-  \subsection{Type System}
-  \subsection{Synthetic process}
+\chapter{Method} % my approach to the problem
+  \section{Syntax}
+    \begin{minted}[breaklines]{ocaml}
+      type 'a t = { name : string; mutable info : 'a};;
+      let p = { name = "John"; info = 23 };;
+      let double_quote = '"'
+      let broken_highlight = ()
+    \end{minted}
+  \section{Semantics}
+  \section{Type System}
+  \section{Synthetic Process}
 
-\section{Evaluation} % quantitative result
+\chapter{Evaluation} % quantitative result
 
-\section{Conclusion} % qualitative result and future work
+\chapter{Conclusion} % qualitative result and future work
 
 \bibliographystyle{unsrt}
 \bibliography{
