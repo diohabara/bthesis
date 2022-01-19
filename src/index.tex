@@ -1,0 +1,41 @@
+% header
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\chapter*{Acknowledgment}
+This research was supervised by Prof. Fujita at the University of Tokyo and supported by Assistant Prof. Sekiyama at National Institute of Technology. \\
+I thank my colleagues at the University of Tokyo, Miyasaka-san, Koike-san, Yu-san, Nagasawa-san, and Yi-san.
+% TODO: add twitter account
+I also show my gratitude to my good friends, hnkz, Akio, Saeki, Arahata, Hori, Naito, Chen, and Sakura.
+
+\chapter{Abstract} % overview of the research topic
+\cite{gulwani2017program}
+
+\chapter{Introduction}
+  \section{Motivation}
+  \section{Program Synthesis}
+  \section{Existing Methods}
+  \section{Type and Effect System}
+
+\chapter{Method} % my approach to the problem
+  \section{Syntax}
+    \begin{minted}[breaklines, linenos]{ocaml}
+      type 'a t = { name : string; mutable info : 'a};;
+      let p = { name = "John"; info = 23 };;
+      let double_quote = '"'
+      let broken_highlight = ()
+    \end{minted}
+  \section{Semantics}
+  \section{Type System}
+  \section{Synthetic Process}
+
+\chapter{Evaluation} % quantitative result
+
+\chapter{Conclusion} % qualitative result and future work
+
+\bibliographystyle{unsrt}
+\bibliography{
+  bib/synthesis
+}
