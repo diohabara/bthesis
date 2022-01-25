@@ -1,3 +1,6 @@
+\newif\ifcommentenabled \commentnabledtrue
+\newcommand{\TS}[1]{\ifcommentenabled\textcolor{red}{TS: #1}\fi}
+
 \documentclass[12pt, a4paper, titlepage]{report}
 \usepackage[dvipdfmx]{graphicx}
 \usepackage[nottoc,numbib]{tocbibind}
@@ -47,15 +50,24 @@ I thank my colleagues at the University of Tokyo, Miyasaka-san, Koike-san, Yu-sa
 I also show my gratitude to my good friends, hnkz, Akio, Saeki, Arahata, Hori, Naito, Chen, and Sakura.
 
 \chapter{Abstract} % overview of the research topic
+\label{section:abstract}
+Recently, increasing number of tools are made to enhance the productivity of programmers. One of the technologies to contribute to that kind of tool is program synthesis.
+I am covering on chapter \ref{section:introduction}.
+on chapter \ref{section:method}.
+on chapter \ref{section:experiment}.
+on chapter \ref{section:conclusion}.
 
 \chapter{Introduction}
+\label{section:introduction}
   \section{Motivation}
   \section{Program Synthesis}
     \cite{gulwani2017program}
   \section{Existing Methods}
   \section{Type and Effect System}
+  \TS{This section may be unnecessary.}
 
 \chapter{Method} % my approach to the problem
+\label{section:method}
   \section{Syntax}
     \begin{minted}[breaklines, linenos]{ocaml}
       type 'a t = { name : string; mutable info : 'a};;
@@ -71,9 +83,13 @@ I also show my gratitude to my good friends, hnkz, Akio, Saeki, Arahata, Hori, N
     \subsection{Effect System}
   \section{Synthetic Process}
 
-\chapter{Evaluation} % quantitative result
+\chapter{Experiment} % quantitative result
+\label{section:experiment}
+\section{Result}
+\section{Consideration}
 
 \chapter{Conclusion} % qualitative result and future work
+\label{section:conclusion}
 
 \bibliographystyle{unsrt}
 \bibliography{
