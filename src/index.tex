@@ -1,4 +1,4 @@
-\newif\ifcommentenabled \commentnabledtrue
+\newif\ifcommentenabled \commentenabledtrue
 \newcommand{\TS}[1]{\ifcommentenabled\textcolor{red}{TS: #1}\fi}
 
 \documentclass[12pt, a4paper, titlepage]{report}
@@ -37,6 +37,9 @@
 
 \begin{document}
 
+% front page
+\includepdf[]{images/sotsuronFront.pdf}
+
 % header
 \maketitle
 \newpage
@@ -51,8 +54,8 @@ I also show my gratitude to my good friends, hnkz, Akio, Saeki, Arahata, Hori, N
 
 \chapter{Abstract} % overview of the research topic
 \label{section:abstract}
-Recently, increasing number of tools are made to enhance the productivity of programmers. One of the technologies to contribute to that kind of tool is program synthesis.
-I am covering on chapter \ref{section:introduction}.
+Recently, increasing number of tools are made to enhance the productivity of programmers. One of the technologies that have contributed is program synthesis.
+I discuss the motivation of this research and briefly explain what program synthesis is on chapter \ref{section:introduction}.
 on chapter \ref{section:method}.
 on chapter \ref{section:experiment}.
 on chapter \ref{section:conclusion}.
