@@ -2,6 +2,7 @@
 \newcommand{\TS}[1]{\ifcommentenabled\textcolor{red}{TS: #1}\fi}
 
 \documentclass[12pt, a4paper, titlepage]{report}
+\usepackage[cache=false]{minted} % highlight programming languages
 \usepackage[dvipdfmx]{graphicx}
 \usepackage[nottoc,numbib]{tocbibind}
 \usepackage[utf8]{inputenc}
@@ -10,7 +11,6 @@
 \usepackage{enumerate}
 \usepackage{hyperref}
 \usepackage{mathptmx}
-\usepackage{minted}
 \usepackage{pdfpages} % PDF inclusion
 \usepackage{verbatim} % comment environment
 \hypersetup{
@@ -69,9 +69,9 @@ Chapter \ref{section:conclusion} concludes with a summary of the results and eva
 
 \chapter{Introduction} \label{section:introduction}
   \section{Motivation}
-  \cite{10.1145/2784731.2789052}
+    \cite{bodik:2015},
   \section{Program Synthesis}
-    \cite{gulwani2017program}
+    \cite{gulwani:2017}
   \section{Existing Methods}
 %   \section{Type and Effect System}
 %   \TS{This section may be unnecessary.}
@@ -80,10 +80,7 @@ Chapter \ref{section:conclusion} concludes with a summary of the results and eva
 \chapter{Method}\label{section:method}
   \section{Syntax}
     \begin{minted}[breaklines, linenos]{ocaml}
-      type 'a t = { name : string; mutable info : 'a};;
-      let p = { name = "John"; info = 23 };;
-      let double_quote = '"'
-      let broken_highlight = ()
+      let _ = print_endline "hello world"
     \end{minted}
   \section{Semantics}
     \subsection{Static Semantics} % type-checking rules
@@ -103,9 +100,9 @@ Chapter \ref{section:conclusion} concludes with a summary of the results and eva
 
 \bibliographystyle{unsrt}
 \bibliography{
-  bib/synthesis
-  bib/tapl
-  bib/synthesisOp
+  bib/msSynthesis,
+  bib/synthesisOp,
+  bib/tapl,
 }
 
 \end{document}
