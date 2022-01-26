@@ -10,7 +10,7 @@
     {
       "name": "tectonic",
       "command": "tectonic",
-      "args": ["-X", "build"],
+      "args": ["-X", "build", "--keep-logs"],
       "env": {}
     }
   ],
