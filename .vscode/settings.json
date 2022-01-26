@@ -1,5 +1,4 @@
 {
-  // ===latex-workshop===
   "latex-workshop.latex.autoBuild.run": "onSave",
   "latex-workshop.latex.recipes": [
     {
