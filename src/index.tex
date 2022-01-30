@@ -11,7 +11,9 @@
 \usepackage{color}
 \usepackage{enumerate}
 \usepackage{hyperref}
+\usepackage{bussproofs}
 \usepackage{mathptmx}
+\usepackage{mathpartir} % automatically fit multiple math expressions
 \usepackage{pdfpages} % PDF inclusion
 \usepackage{verbatim} % comment environment
 \hypersetup{
@@ -98,6 +100,7 @@ Chapter \ref{section:conclusion} concludes with a summary of the results and eva
     In this section, I would like to explain what the program synthesis is for those new to this field.
     Gulwani, Polozov, and Singh summarize it as ``the task of automatically finding a program in the underlying programming language that satisfies the user intent expressed in the form of some specifications'' in their survey paper \emph{``Program Synthesis''} \cite{gulwani:2017}.
     I illustrate the process of the program synthesis below.
+
     \begin{figure}[htbp]
       \centering
       \includegraphics[width=1\textwidth]{images/synthesis.pdf}
@@ -105,6 +108,13 @@ Chapter \ref{section:conclusion} concludes with a summary of the results and eva
       \label{synthesis}
     \end{figure}
 
+    The program synthesis consists of 4 steps.
+    \begin{enumerate}
+      \item The first step is to receive specification from a user.
+      \item The second step is to line up a candidate program.
+      \item The third step is to check if the candidate program meets some requirements.
+      \item The last step is, depending on whether it meets the requirements or not, to return feedback to the synthesizer or synthesize the code.
+    \end{enumerate}
 
   \section{Achievement} % contribution of this paper and intro to technical part
 
@@ -121,6 +131,36 @@ Chapter \ref{section:conclusion} concludes with a summary of the results and eva
     \begin{minted}[breaklines, linenos]{ocaml}
       let _ = print_endline "hello world"
     \end{minted}
+    \begin{figure}[htbp]
+      \begin{flushleft}
+        \textbf{Reduction rules} \quad \framebox{$e_1 \rightarrow e_2$}
+      \end{flushleft}
+      \begin{center}
+        \begin{prooftree}
+          \AxiomC{A}
+          \UnaryInfC{B}
+          \AxiomC{C}
+          \BinaryInfC{D}
+          \AxiomC{E}
+          \AxiomC{F}
+          \BinaryInfC{G}
+          \UnaryInfC{H}
+          \BinaryInfC{J}
+          \end{prooftree}
+          \hfil
+          \begin{prooftree}
+            \AxiomC{A}
+            \UnaryInfC{B}
+            \AxiomC{C}
+            \BinaryInfC{D}
+            \AxiomC{E}
+            \AxiomC{F}
+            \BinaryInfC{G}
+            \UnaryInfC{H}
+            \BinaryInfC{J}
+          \end{prooftree}
+      \end{center}
+    \end{figure}
   \section{Semantics}
     \subsection{Static Semantics} % type-checking rules
     \subsection{Dynamic Semantics} % evaluation rules
