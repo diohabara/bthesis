@@ -72,27 +72,32 @@ Chapter \ref{section:conclusion} concludes with a summary of the results and eva
 \chapter{Introduction}\label{section:introduction}
 \TS{Introduction should include a summary of what this thesis achieves.  The details of the existing methods can be discussed in the related work section, which should be  put before the conclusion.} \TK{move "Related Work"(previous "Existing methods") to after this chapter and add section "Achievement" in this chapter}
   \section{Motivation}
-    The purpose of this research is to enable people to program efficiently and safely in the current software-centric world that demands for many lines of secure code.
+    The purpose of this research is to contribute to programming efficiently and safely in the current software-centric world that demands for many lines of secure code.
     I tackle this problem by using a type-effect system and a technique of program synthesis.
-    Bodik tackled insists that this issue is tractable from non-programmer and programmer perspectives. \cite{bodik:2015}
+    Bodik insists that this issue is tractable from non-programmers' and programmers' perspectives \cite{bodik:2015}.
     I, however, focus only on a programmer point of view.
 
+    % present situation(type is used in everyday development, generating code is required)
+    % what to do(type is usable to boost efficient programming)
     Today, more and more people are developing software.
-    It is believed that an increasing number of people are writing software proportionally.
-    As a result of the current situation, the demand for secure software is also increasing.
-    The type systems of recent programming languages, such as Rust, Scala, and Elm, are strict.
-    The type theory supports the type systems.
-    Software development is facilitated by programming languages that are based on rigorous theories.
+    Thus, it can be said that an increasing number of people are writing programming languages proportionally.
+    As a result of the current situation, the demand for secure code is also increasing.
+    Recent software development is facilitated by programming languages that are based on type systems, such as Rust, TypeScript and Scala.
+    This shows that the type theory is not only an interesting but also a practical research topic, and modern programmers are familiar with the notion.
     Additionally, the increasing demand illustrates the need for more time-efficient and productive programming.
-    The program synthesis was developed in response to this need.
+    The program synthesis fits for this requirement because it is a research topic to deal with easy code generation.
+
     I am motivated by these trends in my research.
-    My goal is to help people develop reliable and fast software through type theory and program synthesis.
-    Additionally, I would like to incorporate the effect system into my research.
-    It is an informative and descriptive system for programming languages.
-    This system allows us to describe the internals of a function.
+    My goal is to help people develop reliable software easily through the type theory and the program synthesis.
+    An additional point that I would like to incorporate into my research is the effect system, which is an informative and descriptive system for programming languages.
+    This system allows us to describe the internals of a function, which results in high-quality code generation.
+    Namely, we can use the system to generate more secure and intended code than code without it.
+    Although this concept is unfamiliar to many programmers, the one in this paper is easily understandable and its popularity is not a big obstacle.
 
   \section{Program Synthesis}
-    In this section, I would like to explain what program synthesis is for those new to this field. Gulwani, Polozov, and Singh summerizes in their survey paper \emph{"Program Synthesis"} \cite{gulwani:2017} summarizes it. 
+    In this section, I would like to explain what the program synthesis is for those new to this field.
+    Gulwani, Polozov, and Singh summarize it in their survey paper \emph{"Program Synthesis"} \cite{gulwani:2017}.
+
   \section{Achievement} % contribution of this paper and intro to technical part
 
 \chapter{Related Work}\label{section:relatedWork}
