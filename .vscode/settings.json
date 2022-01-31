@@ -15,5 +15,5 @@
     }
   ],
   "latex-workshop.view.pdf.viewer": "tab",
-  "latex-workshop.message.error.show": true
+  "latex-workshop.message.error.show": false
 }

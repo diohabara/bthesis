@@ -22,7 +22,10 @@
 }
 
 % Title Page
-\title{Bachelor Thesis \\ TODO: TITLE}
+\title{
+  Bachelor Thesis \\
+  TODO: TITLE
+}
 \author{
   03190413 Takemaru Kadoi
   \\[1cm]
@@ -148,7 +151,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     Constraint solving is \textit{finding an instantiation of free variables in a formula}. This requires more rigorous specification than other techniques and syntactic program restrictions which are encoded so that you can find true models for a correct program.
     I will give you some explanations about component-based synthesis proposed by Jha et al. \cite{jha:2010}.
     This type of synthesis encodes the language and its spec into SAT/SMT constraints precisely. A component is given in the form of a specification with an input and output pair, which are written as logical formulae. In other words, each component is defined as a specialized function.
-    Minimum program encoded by these functions has three attributes.
+    Minimum program encoded by these functions has three attributes, which introduced by Jha et al.
     \begin{enumerate}
         \item is well-formed
         \item uses all components without violating their respective specs
@@ -171,8 +174,16 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     Although their solutions are not complete, they are highly efficient if you have quantitative objectives.
 
   \section{Deduction-based Programming}
+    Deduction-based programming is also called programming by examples (PBE).
+    This approach consists of intent specification, program space, and search algorithms.
+    Given input/output examples, a synthesizer generates a candidate program \textbf{P}.
+    Using an SMT solver, we efficiently search for a program in the hypothesis space.
+    If the verifier finds a counter-example, sends the synthesizer feedback \textbf{F}.
+    Given a new input/output example, the synthesizer will produce another candidate until the \textbf{P} is verified.
+    % TODO: add examples such FlashFill
 
-  % TODO: add type-driven program synthesis
+
+  % FIXME: add section[type-driven program synthesis]
 
 % my approach to the problem
 \chapter{Method}\label{chapter:method}
@@ -229,12 +240,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 
 \bibliographystyle{unsrt}
 \bibliography{
-  bib/brainfuck,
-  bib/msSynthesis,
   bib/papers,
-  bib/ogcbps,
-  bib/synthesisOp,
-  bib/tapl,
   bib/textbooks,
 }
 
