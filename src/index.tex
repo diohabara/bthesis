@@ -51,7 +51,7 @@ I thank my colleagues at the University of Tokyo, Miyasaka-san, Koike-san, Yu-sa
 I also show my gratitude to my good friends, hnkz, Akio, Saeki, Arahata, Hori, Naito, Chen, and Sakura.
 
 % overview of the research topic
-\chapter{Abstract} \label{section:abstract}
+\chapter{Abstract} \label{chapter:abstract}
 In recent years, several tools have been developed to enhance the productivity of programmers.
 In particular, tools for generating code have attracted a lot of attention, and program synthesis is a research field that supports this development.
 Program synthesis requires specifications with which users tell a computer what they want to achieve.
@@ -65,13 +65,13 @@ Many users are unfamiliar with effects, but the effects \TS{What "they" means is
 By utilizing type and effect, I can efficiently explore candidate code and demonstrate that the intended code will be generated. I will demonstrate some specifications and an example of a program that has been generated based on these specifications.
 \TS{(DONE)How do you synthesize programs with types and effects?  What experiments are (planed to be) conducted?  How about results?} \TK{describe how to synthesize and what to do.}
 
-In Chapter \ref{section:introduction}, I discuss the motivation for this research, what program synthesis is, and existing methods  The details of the existing methods can be discussed in the related work section, which should be  put before the conclusion.
-I give examples of existing researches in Chapter \ref{section:relatedWork}.
-I explain my proposed method in Chapter \ref{section:method}.
-I present in Chapter \ref{section:experiment} the results obtained by the proposed method and evaluate them.
-Chapter \ref{section:conclusion} concludes with a summary of the results and evaluation, as well as future issues.
+In Chapter \ref{chapter:introduction}, I discuss the motivation for this research, what program synthesis is, and existing methods  The details of the existing methods can be discussed in the related work chapter, which should be  put before the conclusion.
+I give examples of existing researches in Chapter \ref{chapter:relatedWork}.
+I explain my proposed method in Chapter \ref{chapter:method}.
+I present in Chapter \ref{chapter:experiment} the results obtained by the proposed method and evaluate them.
+Chapter \ref{chapter:conclusion} concludes with a summary of the results and evaluation, as well as future issues.
 
-\chapter{Introduction}\label{section:introduction}
+\chapter{Introduction}\label{chapter:introduction}
 \TS{Introduction should include a summary of what this thesis achieves.  The details of the existing methods can be discussed in the related work section, which should be  put before the conclusion.} \TK{move "Related Work"(previous "Existing methods") to after this chapter and add section "Achievement" in this chapter}
   \section{Motivation}
     The purpose of this research is to contribute to programming efficiently and safely in the current software-centric world that demands for many lines of secure code.
@@ -99,34 +99,51 @@ Chapter \ref{section:conclusion} concludes with a summary of the results and eva
   \section{Program Synthesis}
     In this section, I would like to explain what the program synthesis is for those new to this field.
     Gulwani, Polozov, and Singh summarize it as ``the task of automatically finding a program in the underlying programming language that satisfies the user intent expressed in the form of some specifications'' in their survey paper \emph{``Program Synthesis''} \cite{gulwani:2017}.
-    I illustrate the process of the program synthesis below.
 
+    I illustrate the process of the program synthesis below.
     \begin{figure}[htbp]
       \centering
       \includegraphics[width=1\textwidth]{images/synthesis.pdf}
       \caption{How the program synthesis generates program}
-      \label{synthesis}
+      \label{synthesisOverview}
     \end{figure}
 
     The program synthesis consists of 4 steps.
     \begin{enumerate}
-      \item The first step is to receive specification from a user.
-      \item The second step is to line up a candidate program.
-      \item The third step is to check if the candidate program meets some requirements.
-      \item The last step is, depending on whether it meets the requirements or not, to return feedback to the synthesizer or synthesize the code.
+      \item To receive specification from a user.
+      \item To line up a candidate program.
+      \item To check if the candidate program meets some requirements.
+      \item To return feedback to the synthesizer or synthesize the program depending on whether it meets the requirements or not
     \end{enumerate}
+
+    Moreover, it has 3 things to consider.
+    \begin{enumerate}
+      \item User Input
+      \item Search Space
+      \item Search Technique
+    \end{enumerate}
+    Synthesizers can accept a various kinds of inputs.
+    For instance, natural languages, logical formulae, and incomplete program code are acceptable.
+    Search space is a consequent aspect that is related to the speed and accuracy of program synthesis.
+    If the target language is a as simple language as brainfuck, which is created by Urban Müller \cite{easter:2020}, the complexity will be different from when the target is a fully functional programming language such as C++.
+    Search technique is what I contribute to in this paper.
+    The technique is a central point of the program synthesis.
+    It determines how fast and correctly a synthesizer will produce code, and it depends on the two components, user input and search space.
+
+    I am going to deal with these questions in section \ref{section:syntheticProcess}, in which I cover how to synthesize program.
 
   \section{Achievement} % contribution of this paper and intro to technical part
 
-\chapter{Related Work}\label{section:relatedWork}
+\chapter{Related Work}\label{chapter:relatedWork}
 % TODO: get texts from progress report(https://www.overleaf.com/project/613c638a684e51edccdfc7b2)
+  In this chapter, I give you brief introductions to related search techniques.
   \section{Enumerative Search}
   \section{Constraint Solving}
   \section{Stochastic Search}
   \section{Deduction-based Programming}
 
 % my approach to the problem
-\chapter{Method}\label{section:method}
+\chapter{Method}\label{chapter:method}
   \section{Syntax}
     \begin{minted}[breaklines, linenos]{ocaml}
       let _ = print_endline "hello world"
@@ -168,18 +185,19 @@ Chapter \ref{section:conclusion} concludes with a summary of the results and eva
     \cite{pierce:2002}
     \subsection{Type System}
     \subsection{Effect System}
-  \section{Synthetic Process}
+  \section{Synthetic Process}\label{section:syntheticProcess}
 
 % my approach to the problem
-\chapter{Experiment}\label{section:experiment}
+\chapter{Experiment}\label{chapter:experiment}
 \section{Result}
 \section{Consideration}
 
 % qualitative result and remaining problems/future work
-\chapter{Conclusion}\label{section:conclusion}
+\chapter{Conclusion}\label{chapter:conclusion}
 
 \bibliographystyle{unsrt}
 \bibliography{
+  bib/brainfuck,
   bib/msSynthesis,
   bib/synthesisOp,
   bib/tapl,
