@@ -122,25 +122,26 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
       \item Search Space
       \item Search Technique
     \end{enumerate}
-    Synthesizers can accept a various kinds of inputs.
-    For instance, natural languages, logical formulae, and incomplete program code are acceptable.
-    Search space is a consequent aspect that is related to the speed and accuracy of program synthesis.
-    If the target language is a as simple language as brainfuck, which is created by Urban Müller \cite{easter:2020}, the complexity will be different from when the target is a fully functional programming language such as C++.
-    Search technique is what I contribute to in this paper.
-    The technique is a central point of the program synthesis.
-    It determines how fast and correctly a synthesizer will produce code, and it depends on the two components, user input and search space.
+    Synthesizers can accept a variety of inputs.
+    Natural languages, logical formulae, and incomplete program code are acceptable forms of communication.
+    In relation to the speed and accuracy of program synthesis, search space is a consequential aspect.
+    When the target language is a simple language such as brainfuck, which is created by Urban Müller \cite{easter:2020}, the complexity will differ from when the target language is a fully functional language such as C++.
+    I have contributed to the field of search technique in this paper.
+    The technique is an essential component of the program synthesis process.
+    An algorithm determines how fast and how accurately a synthesizer will produce code, and it inseparable from the two factors, user input and search space.
 
-    I am going to deal with these questions in section \ref{section:syntheticProcess}, in which I cover how to synthesize program.
+    I am going to deal with these questions in section \ref{section:syntheticProcess}, in which I cover how to synthesize a program.
 
   \section{Achievement} % contribution of this paper and intro to technical part
 
 \chapter{Related Work}\label{chapter:relatedWork}
-% TODO: get texts from progress report(https://www.overleaf.com/project/613c638a684e51edccdfc7b2)
-  In this chapter, I give you brief introductions to related search techniques.
+  The purpose of this chapter is to provide you with a brief overview of existing search techniques that seem to be relevant. As I said in the previous section, one of the factors that have improved the tractability of search space is new search techniques.
+  It is pertinent to note that even though I will describe some techniques as separate ones, they are all interconnected. A type of approach is used by another type of approach and vice versa. This categorization is just to clarify what aspects different algorithms have in common.
   \section{Enumerative Search}
   \section{Constraint Solving}
   \section{Stochastic Search}
   \section{Deduction-based Programming}
+  % TODO: add type-driven program synthesis
 
 % my approach to the problem
 \chapter{Method}\label{chapter:method}
