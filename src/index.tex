@@ -116,7 +116,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
       \item To return feedback to the synthesizer or synthesize the program depending on whether it meets the requirements or not
     \end{enumerate}
 
-    Moreover, it has 3 things to consider.
+    Moreover, it has 3 components to consider.
     \begin{enumerate}
       \item User Input
       \item Search Space
@@ -137,15 +137,57 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 \chapter{Related Work}\label{chapter:relatedWork}
   The purpose of this chapter is to provide you with a brief overview of existing search techniques that seem to be relevant. As I said in the previous section, one of the factors that have improved the tractability of search space is new search techniques.
   It is pertinent to note that even though I will describe some techniques as separate ones, they are all interconnected. A type of approach is used by another type of approach and vice versa. This categorization is just to clarify what aspects different algorithms have in common.
+
   \section{Enumerative Search}
+  % TODO: more examples of top-down and bottom-up search
+  % TODO: add images
+  Enumeration is the most efficient way of searching since it overlooks nothing. Nevertheless, it has a trade-off. The search space is enormous. In order to solve in realistic time, you need to prune some candidate programs. Several pruning techniques have been developed. The basic idea is to enumerate all trees and prune trees equivalent to those already explored. I briefly introduce two of them, top-down tree search and bottom-up tree search.
+  Top-down tree search starts from the grammar of programming languages, which means that they search nonterminals in terminals. On the other hand, bottom-up tree search starts from expressions.
+
   \section{Constraint Solving}
+    Constraint solving is \textit{finding an instantiation of free variables in a formula}. This requires more rigorous specification than other techniques and syntactic program restrictions which are encoded so that you can find true models for a correct program.
+    I will give you some explanations about component-based synthesis proposed by Jha et al. \cite{jha:2010}.
+    This type of synthesis encodes the language and its spec into SAT/SMT constraints precisely. A component is given in the form of a specification with an input and output pair, which are written as logical formulae. In other words, each component is defined as a specialized function.
+    Minimum program encoded by these functions has three attributes.
+    \begin{enumerate}
+        \item is well-formed
+        \item uses all components without violating their respective specs
+        \item is consistent with the provided spec
+    \end{enumerate}
+    Using these characteristics, Jah et al. produced a complete SMT encoding for the whole program synthesis.
+
   \section{Stochastic Search}
+    Stochastic search is another approach I discuss in this paper.
+    Stochastic methods use the distribution over the space of programs in the hypothesis space that is conditioned on the specification to obtain a consistent program.
+    The learned distribution will lead to a better prediction rate of programs that correspond to the specification.
+
+    The stochastic Syntax Guided Synthesis (SyGuS) solver uses the Metropolis-Hastings algorithm \cite{alur:2013}.
+    We can represent the space of all possible programs in the hypothesis space with a large dense graph.
+    Each node is a partial expression and an edge from node $n_1$ (= $e_1$) to node $n_2$ (= $e_2$) signifies that $e_2$ can be obtained from $e_1$.
+    Each edge has a probability that $e_1$ becomes $e_2$.
+    Metropolis-Hastings algorithm, in a nutshell, updates the probabilities and samples the desired program.
+
+    There are other methods based on probability, such as genetic programming, machine learning, and neural programming.
+    Although their solutions are not complete, they are highly efficient if you have quantitative objectives.
+
   \section{Deduction-based Programming}
+
   % TODO: add type-driven program synthesis
 
 % my approach to the problem
 \chapter{Method}\label{chapter:method}
   \section{Syntax}
+  \section{Semantics}
+    \subsection{Static Semantics} % type-checking rules
+    \subsection{Dynamic Semantics} % evaluation rules
+  \section{Type and Effect System}
+    \subsection{Type System}
+    \subsection{Effect System}
+  \section{Synthetic Process}\label{section:syntheticProcess}
+
+% my approach to the problem
+\chapter{Experiment}\label{chapter:experiment}
+    \cite{pierce:2002}
     \begin{minted}[breaklines, linenos]{ocaml}
       let _ = print_endline "hello world"
     \end{minted}
@@ -179,19 +221,8 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
           \end{prooftree}
       \end{center}
     \end{figure}
-  \section{Semantics}
-    \subsection{Static Semantics} % type-checking rules
-    \subsection{Dynamic Semantics} % evaluation rules
-  \section{Type and Effect System}
-    \cite{pierce:2002}
-    \subsection{Type System}
-    \subsection{Effect System}
-  \section{Synthetic Process}\label{section:syntheticProcess}
-
-% my approach to the problem
-\chapter{Experiment}\label{chapter:experiment}
-\section{Result}
-\section{Consideration}
+  \section{Result}
+  \section{Consideration}
 
 % qualitative result and remaining problems/future work
 \chapter{Conclusion}\label{chapter:conclusion}
@@ -200,8 +231,11 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 \bibliography{
   bib/brainfuck,
   bib/msSynthesis,
+  bib/papers,
+  bib/ogcbps,
   bib/synthesisOp,
   bib/tapl,
+  bib/textbooks,
 }
 
 \end{document}
