@@ -8,6 +8,7 @@
 \usepackage[nottoc,numbib]{tocbibind}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{color}
 \usepackage{enumerate}
 \usepackage{hyperref}
@@ -186,53 +187,138 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 
 % my approach to the problem
 \chapter{Method}\label{chapter:method}
+  In this chapter, I am going to introduce the internals of $\mathbf{Titan}$, which is a programming language and a tool for program synthesis.
+  First, I will introduce its syntax, and next its semantics.
+  After that, I will explain you how to synthesize Titan from its specifications.
+  Rules in this chapter are inspired by a textbook \emph{"Types and Programming Languages"} \cite{pierce:2002} and a paper \emph{"RbSyn: Type- and Effect-Guided Program Synthesis"} \cite{guria:2021}.
   \section{Syntax}
+    % FIXME: syntax
+    % TODO: add explanation in the natural language
+    Figure \ref{fig:evalRules} shows the syntax of $\mathbf{Titan}$.
+    \begin{figure}[htbp]
+      \centering
+      \begin{flushleft}
+        \textbf{Syntax}
+      \end{flushleft}
+      \[
+      \begin{array}{lccl}
+        \emph{Values} &
+          \mathtt{v} & ::= & \mathtt{true \mid false \mid integer \mid string }\\
+        \emph{Expressions} &
+          \mathtt{e} & ::= & \mathtt{v} \mid \mathtt{x} \mid \mathtt{e\ uop\ e \mid e\ bop\ e} \\
+          & & \mid & \mathtt{let}\ \mathtt{x = e}\ \mathtt{in}\ \mathtt{e} \\
+          & & \mid & \mathtt{if}\ \mathtt{b}\ \mathtt{then}\ \mathtt{e}\ \mathtt{else}\ \mathtt{e} \\
+          & & \mid & \mathtt{fun}\ \mathtt{\{(x : \tau)\}^{+} : [\tau \{\{\epsilon\}^{+}\}] \to e} \\
+          & & \mid & \mathtt{let\ rec}\ \mathtt{x} = \mathtt{fun}\ \mathtt{\{(x : \tau)\}^{+} : [\tau \{\{\epsilon\}^{+}\}] \to \{\epsilon*\}}\ \mathtt{in}\ \mathtt{e} \\
+          & & \mid & \mathtt{hole : \tau} \mid \mathtt{hole : \epsilon}\\
+        \emph{Unary Operators} &
+          \mathtt{uop} & ::= & ! \\
+        \emph{Binary Operators} &
+          \mathtt{bop} & ::= & \mathtt{+} \mid \mathtt{-} \mid \mathtt{\times} \mid \mathtt{/} \mid \mathtt{\%} \\
+          & & ::= & \mathtt{=} \mid \mathtt{\neq} \mid \mathtt{<} \mid \mathtt{\leq} \\
+          & & ::= & \mathtt{>} \mid \mathtt{\geq} \mid \mathtt{\land} \mid \mathtt{\lor} \\
+        \emph{Types} &
+          \mathtt{\tau} & ::= & \mathtt{unit \mid bool \mid int \mid string \mid any} \\
+        \emph{Effects} &
+          \mathtt{\epsilon} & ::= & \mathtt{open \mid read \mid write \mid close} \\
+          & & ::= & \mathtt{unit \mid any} \\
+        \emph{Type Environment} &
+          \mathtt{\Gamma} & ::= & \mathtt{\varnothing \mid x : \tau, \Gamma} \\
+      \end{array}
+      \]
+      \[
+        x \in \textrm{variables}
+      \]
+      \caption{Syntax of $\mathbf{Titan}$}
+      \label{fig:syntax}
+    \end{figure}
+
   \section{Semantics}
-    \subsection{Static Semantics} % type-checking rules
-    \subsection{Dynamic Semantics} % evaluation rules
-  \section{Type and Effect System}
+    \subsection{Evaluation Rules}
+      % FIXME: evaluation rules
+      % TODO: add explanation in the natural language
+      \begin{figure}[htbp]
+        \centering
+        \begin{flushleft}
+          \textbf{Evaluation Rules} \quad \framebox{$\mathtt{t \to t'}$}
+        \end{flushleft}
+        % let
+        \begin{mathpar}
+          % var
+          \dfrac{1}{1}
+          % let
+          \dfrac
+            {\mathtt{t_1\ \to\ t_1'}}
+            {\mathtt{let\ x=t_1\ in\ t_2 \to\ let\ x=t_1'\ in\ t_2}}
+            \left(\textrm{E-LET}\right)
+          % if
+          % fun
+          % let-rec
+          % uop
+          % bop
+          % hole
+        \end{mathpar}
+        \caption{Evaluation Rules of $\mathbf{Titan}$}
+        \label{fig:evalRules}
+      \end{figure}
     \subsection{Type System}
-    \subsection{Effect System}
+      % FIXME: type system
+      % TODO: add explanation in the natural language
+      \begin{figure}[htbp]
+        \centering
+        \begin{flushleft}
+          \textbf{Type System} \quad \framebox{$\Gamma \vdash \mathtt{t : T}$}
+        \end{flushleft}
+        \[
+          % var
+          % let
+          \dfrac
+            {\mathtt{\Gamma\ \vdash\ t_1 : T_1 \quad \Gamma, x : T_1\ \vdash\ t_2 : T_2}}
+            {\mathtt{\Gamma\ \vdash\ let\ x=t_1\ in\ t_2 : T_2}}
+            \left(\textrm{T-LET}\right)
+          % if
+          % fun
+          % let-rec
+          % uop
+          % bop
+          % hole
+        \]
+        \caption{Type System of $\mathbf{Titan}$}
+        \label{fig:typeSystem}
+      \end{figure}
+
   \section{Synthetic Process}\label{section:syntheticProcess}
+    % TODO: effect system
+    % TODO: add explanation in the natural language
+    \begin{figure}[htbp]
+      \centering
+      \begin{flushleft}
+        \textbf{Effect-guided Synthesis Rules} \quad \framebox{$\Gamma \vdash_{CT} \mathtt{\epsilon : T}$}
+      \end{flushleft}
+      \[
+        \dfrac
+          {\mathtt{\Gamma\ \vdash\ t_1 : T_1 \quad \Gamma, x : T_1\ \vdash\ t_2 : T_2}}
+          {\mathtt{\Gamma\ \vdash\ let\ x=t_1\ in\ t_2 : T_2}}
+          \left(\textrm{T-LET}\right)
+        % hole
+        % syn->const
+        % syn->var
+        % syn->app
+      \]
+      \caption{Synthesis Rules of $\mathbf{Titan}$}
+      \label{fig:synthesisRules}
+    \end{figure}
 
 % my approach to the problem
 \chapter{Experiment}\label{chapter:experiment}
-    \cite{pierce:2002}
+  % TODO: situation
     \begin{minted}[breaklines, linenos]{ocaml}
       let _ = print_endline "hello world"
     \end{minted}
-    \begin{figure}[htbp]
-      \begin{flushleft}
-        \textbf{Reduction rules} \quad \framebox{$e_1 \rightarrow e_2$}
-      \end{flushleft}
-      \begin{center}
-        \begin{prooftree}
-          \AxiomC{A}
-          \UnaryInfC{B}
-          \AxiomC{C}
-          \BinaryInfC{D}
-          \AxiomC{E}
-          \AxiomC{F}
-          \BinaryInfC{G}
-          \UnaryInfC{H}
-          \BinaryInfC{J}
-          \end{prooftree}
-          \hfil
-          \begin{prooftree}
-            \AxiomC{A}
-            \UnaryInfC{B}
-            \AxiomC{C}
-            \BinaryInfC{D}
-            \AxiomC{E}
-            \AxiomC{F}
-            \BinaryInfC{G}
-            \UnaryInfC{H}
-            \BinaryInfC{J}
-          \end{prooftree}
-      \end{center}
-    \end{figure}
   \section{Result}
+  % TODO: code generation examples
   \section{Consideration}
+  % TODO: what to do
 
 % qualitative result and remaining problems/future work
 \chapter{Conclusion}\label{chapter:conclusion}
