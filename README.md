@@ -9,7 +9,7 @@
 Enter nix shell. All commands are supposed to be executed in the nix shell.
 
 ```bash
-nix-shell shell.nix
+nix-shell
 ```
 
 ## before compiling
