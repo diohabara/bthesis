@@ -144,13 +144,23 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
   \section{Enumerative Search}
   % TODO: more examples of top-down and bottom-up search
   % TODO: add images
-  Enumeration is the most efficient way of searching since it overlooks nothing. Nevertheless, it has a trade-off. The search space is enormous. In order to solve in realistic time, you need to prune some candidate programs. Several pruning techniques have been developed. The basic idea is to enumerate all trees and prune trees equivalent to those already explored. I briefly introduce two of them, top-down tree search and bottom-up tree search.
-  Top-down tree search starts from the grammar of programming languages, which means that they search nonterminals in terminals. On the other hand, bottom-up tree search starts from expressions.
+  Enumeration is the most efficient way of searching since it overlooks nothing.
+  Nevertheless, it has a trade-off.
+  The search space is enormous.
+  In order to solve in realistic time, you need to prune some candidate programs.
+  Several pruning techniques have been developed.
+  The basic idea is to enumerate all trees and prune trees equivalent to those already explored.
+  I briefly introduce two of them, top-down tree search and bottom-up tree search.
+  Top-down tree search starts from the grammar of programming languages, which means that they search nonterminals in terminals.
+  On the other hand, bottom-up tree search starts from expressions.
 
   \section{Constraint Solving}
     Constraint solving is \textit{finding an instantiation of free variables in a formula}. This requires more rigorous specification than other techniques and syntactic program restrictions which are encoded so that you can find true models for a correct program.
     I will give you some explanations about component-based synthesis proposed by Jha et al. \cite{jha:2010}.
-    This type of synthesis encodes the language and its spec into SAT/SMT constraints precisely. A component is given in the form of a specification with an input and output pair, which are written as logical formulae. In other words, each component is defined as a specialized function.
+    This type of synthesis encodes the language and its spec into SAT/SMT constraints precisely.
+    An SMT solver like \textit{Z3} \cite{moura:2008} solves the constraints.
+    A component is given in the form of a specification with an input and output pair, which are written as logical formulae.
+    In other words, each component is defined as a specialized function.
     Minimum program encoded by these functions has three attributes, which introduced by Jha et al.
     \begin{enumerate}
         \item is well-formed
