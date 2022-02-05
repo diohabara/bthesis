@@ -225,13 +225,14 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
           \mathtt{uop} & ::= & ! \\
         \emph{Binary Operators} &
           \mathtt{bop} & ::= & \mathtt{+} \mid \mathtt{-} \mid \mathtt{\times} \mid \mathtt{/} \mid \mathtt{\%} \\
-          & & ::= & \mathtt{=} \mid \mathtt{\neq} \mid \mathtt{<} \mid \mathtt{\leq} \\
-          & & ::= & \mathtt{>} \mid \mathtt{\geq} \mid \mathtt{\land} \mid \mathtt{\lor} \\
+          & & \mid & \mathtt{=} \mid \mathtt{\neq} \mid \mathtt{<} \mid \mathtt{\leq} \\
+          & & \mid & \mathtt{>} \mid \mathtt{\geq} \mid \mathtt{\land} \mid \mathtt{\lor} \\
         \emph{Types} &
-          \mathtt{\tau} & ::= & \mathtt{unit \mid bool \mid int \mid string \mid any} \\
+          \mathtt{\tau} & ::= & \mathtt{unit \mid bool \mid int \mid string} \\
+          & & \mid & \mathtt{any \mid \tau \to \tau} \\
         \emph{Effects} &
           \mathtt{\epsilon} & ::= & \mathtt{open \mid read \mid write \mid close} \\
-          & & ::= & \mathtt{unit \mid any} \\
+          & & \mid & \mathtt{unit \mid any} \\
         \emph{Type Environment} &
           \mathtt{\Gamma} & ::= & \mathtt{\varnothing \mid x : \tau, \Gamma} \\
       \end{array}
