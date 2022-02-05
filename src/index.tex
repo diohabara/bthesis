@@ -1,6 +1,7 @@
 \newif\ifcommentenabled \commentenabledtrue
 \newcommand{\TS}[1]{\ifcommentenabled\textcolor{red}{TS: #1}\fi}
 \newcommand{\TK}[1]{\ifcommentenabled\textcolor{blue}{TK: #1}\fi}
+% TODO: How can I write E-LET like those rules in TaPL?
 
 \documentclass[12pt, a4paper, titlepage]{report}
 \usepackage[cache=false]{minted} % highlight programming languages
@@ -136,6 +137,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     I am going to deal with these questions in section \ref{section:syntheticProcess}, in which I cover how to synthesize a program.
 
   \section{Achievement} % contribution of this paper and intro to technical part
+  % TODO: write after implementation
 
 \chapter{Related Work}\label{chapter:relatedWork}
   The purpose of this chapter is to provide you with a brief overview of existing search techniques that seem to be relevant. As I said in the previous section, one of the factors that have improved the tractability of search space is new search techniques.
@@ -202,9 +204,8 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
   After that, I will explain you how to synthesize Titan from its specifications.
   Rules in this chapter are inspired by a textbook \emph{"Types and Programming Languages"} \cite{pierce:2002} and a paper \emph{"RbSyn: Type- and Effect-Guided Program Synthesis"} \cite{guria:2021}.
   \section{Syntax}
-    % FIXME: syntax
     % TODO: add explanation in the natural language
-    Figure \ref{fig:evalRules} shows the syntax of $\mathbf{Titan}$.
+    Figure \ref{fig:syntax} shows the syntax of $\mathbf{Titan}$.
     \begin{figure}[htbp]
       \centering
       \begin{flushleft}
@@ -213,14 +214,15 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
       \[
       \begin{array}{lccl}
         \emph{Values} &
-          \mathtt{v} & ::= & \mathtt{true \mid false \mid integer \mid string }\\
+          \mathtt{v} & ::= & \mathtt{unit \mid boolean \mid integer \mid string }\\
         \emph{Expressions} &
           \mathtt{e} & ::= & \mathtt{v} \mid \mathtt{x} \mid \mathtt{e\ uop\ e \mid e\ bop\ e} \\
-          & & \mid & \mathtt{let}\ \mathtt{x = e}\ \mathtt{in}\ \mathtt{e} \\
+          & & \mid & \mathtt{e\ e} \\
           & & \mid & \mathtt{if}\ \mathtt{b}\ \mathtt{then}\ \mathtt{e}\ \mathtt{else}\ \mathtt{e} \\
+          & & \mid & \mathtt{let}\ \mathtt{x = e}\ \mathtt{in}\ \mathtt{e} \\
           & & \mid & \mathtt{fun}\ \mathtt{\{(x : \tau)\}^{+} : [\tau \{\{\epsilon\}^{+}\}] \to e} \\
-          & & \mid & \mathtt{let\ rec}\ \mathtt{x} = \mathtt{fun}\ \mathtt{\{(x : \tau)\}^{+} : [\tau \{\{\epsilon\}^{+}\}] \to \{\epsilon*\}}\ \mathtt{in}\ \mathtt{e} \\
-          & & \mid & \mathtt{hole : \tau} \mid \mathtt{hole : \epsilon}\\
+          & & \mid & \mathtt{hole : \tau} \\
+          & & \mid & \mathtt{hole : \epsilon} \\
         \emph{Unary Operators} &
           \mathtt{uop} & ::= & ! \\
         \emph{Binary Operators} &
@@ -228,13 +230,15 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
           & & \mid & \mathtt{=} \mid \mathtt{\neq} \mid \mathtt{<} \mid \mathtt{\leq} \\
           & & \mid & \mathtt{>} \mid \mathtt{\geq} \mid \mathtt{\land} \mid \mathtt{\lor} \\
         \emph{Types} &
-          \mathtt{\tau} & ::= & \mathtt{unit \mid bool \mid int \mid string} \\
+          \mathtt{\tau} & ::= & \mathtt{bool \mid int \mid string \mid unit} \\
           & & \mid & \mathtt{any \mid \tau \to \tau} \\
         \emph{Effects} &
           \mathtt{\epsilon} & ::= & \mathtt{open \mid read \mid write \mid close} \\
-          & & \mid & \mathtt{unit \mid any} \\
+          & & \mid & \mathtt{unit \mid any \mid \epsilon \to \epsilon} \\
         \emph{Type Environment} &
           \mathtt{\Gamma} & ::= & \mathtt{\varnothing \mid x : \tau, \Gamma} \\
+        \emph{Effect Environment} &
+          \mathtt{E} & ::= & \mathtt{\varnothing \mid x : \epsilon, E} \\
       \end{array}
       \]
       \[
@@ -246,28 +250,49 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 
   \section{Semantics}
     \subsection{Evaluation Rules}
-      % FIXME: evaluation rules
       % TODO: add explanation in the natural language
+      Figure \ref{fig:evalRules} shows the syntax of $\mathbf{Titan}$.
       \begin{figure}[htbp]
         \centering
         \begin{flushleft}
           \textbf{Evaluation Rules} \quad \framebox{$\mathtt{t \to t'}$}
         \end{flushleft}
-        % let
         \begin{mathpar}
-          % var
-          \dfrac{1}{1}
           % let
           \dfrac
-            {\mathtt{t_1\ \to\ t_1'}}
+            {\mathtt{t_1 \to t_1'}}
             {\mathtt{let\ x=t_1\ in\ t_2 \to\ let\ x=t_1'\ in\ t_2}}
-            \left(\textrm{E-LET}\right)
+            \left(\textrm{E-LET}\right) \and
           % if
+          \dfrac
+            {}
+            {\mathtt{if\ true\ then\ t_2\ else\ t_3 \to t_2}}
+            \left(\textrm{E-IFTRUE}\right) \and
+          \dfrac
+            {}
+            {\mathtt{if\ false\ then\ t_2\ else\ t_3 \to t_3}}
+            \left(\textrm{E-IFFALSE}\right) \and
+          \dfrac
+            {\mathtt{t_1 \to t_1'}}
+            {\mathtt{if\ t_1\ then\ t_2\ else\ t_3 \to if\ t_1'\ then\ t_2\ else\ t_3}}
+            \left(\textrm{E-IF}\right) \and
           % fun
-          % let-rec
-          % uop
-          % bop
+          \dfrac
+            {\mathtt{t_1 \to t_1'}}
+            {\mathtt{t_1\ t_2 \to t_1'\ t_2}}
+            \left(\textrm{E-APP1}\right) \and
+          \dfrac
+            {\mathtt{t_2 \to t_2'}}
+            {\mathtt{t_1\ t_2 \to t_1\ t_2'}}
+            \left(\textrm{E-APP2}\right) \and
+          \dfrac
+            {}
+            {\mathtt{(fun\ x \to t_{12}) v_2 \to [x \mapsto v_2]t_{12}}}
+            \left(\textrm{E-APPABS}\right) \and
           % hole
+          \dfrac
+            {}
+            {\mathtt{hole \to unit}}
         \end{mathpar}
         \caption{Evaluation Rules of $\mathbf{Titan}$}
         \label{fig:evalRules}
@@ -275,25 +300,47 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     \subsection{Type System}
       % FIXME: type system
       % TODO: add explanation in the natural language
+      Figure \ref{fig:typeSystem} shows the syntax of $\mathbf{Titan}$.
       \begin{figure}[htbp]
         \centering
         \begin{flushleft}
-          \textbf{Type System} \quad \framebox{$\Gamma \vdash \mathtt{t : T}$}
+          \textbf{Type System} \quad \framebox{$\Gamma \vdash \mathtt{t : \tau}$}
         \end{flushleft}
-        \[
+        \begin{mathpar}
           % var
+          \dfrac
+            {\mathtt{x : \tau \in \Gamma}}
+            {\mathtt{\Gamma \vdash x : \tau}}
+            \left(\textrm{T-VAR}\right) \and
           % let
           \dfrac
             {\mathtt{\Gamma\ \vdash\ t_1 : T_1 \quad \Gamma, x : T_1\ \vdash\ t_2 : T_2}}
             {\mathtt{\Gamma\ \vdash\ let\ x=t_1\ in\ t_2 : T_2}}
-            \left(\textrm{T-LET}\right)
+            \left(\textrm{T-LET}\right) \and
           % if
+          \dfrac
+            {}
+            {\mathtt{true : bool}}
+            \left(\textrm{T-TRUE}\right) \and
+          \dfrac
+            {}
+            {\mathtt{false : bool}}
+            \left(\textrm{T-FALSE}\right) \and
+          \dfrac
+            {\mathtt{t_1 : bool \quad t_2 : \tau \quad t_3 : \tau}}
+            {\mathtt{if\ t_1\ then\ t_2\ else\ t_3 : \tau}}
+            \left(\textrm{T-IF}\right) \and
           % fun
-          % let-rec
-          % uop
-          % bop
-          % hole
-        \]
+            \dfrac
+              {\mathtt{\Gamma, x : \tau_1 \vdash t_2 : \tau_2}}
+              {\mathtt{\Gamma \vdash fun\ (x : \tau_1) \to t_2 : \tau_1 \to \tau_2}}
+              \left(\textrm{T-ABS}\right) \and
+            \dfrac
+              {\mathtt{\Gamma \vdash t_1 : \tau_{11} \to \tau_{12} \quad \Gamma \vdash t_2 : \tau_{11}}}
+              {\mathtt{\Gamma \vdash t_1\ t_2 : \tau_{12}}}
+              \left(\textrm{T-APP}\right) \and
+          % TODO:hole
+        \end{mathpar}
         \caption{Type System of $\mathbf{Titan}$}
         \label{fig:typeSystem}
       \end{figure}
@@ -301,20 +348,17 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
   \section{Synthetic Process}\label{section:syntheticProcess}
     % TODO: effect system
     % TODO: add explanation in the natural language
+    Figure \ref{fig:synthesisRules} shows the syntax of $\mathbf{Titan}$.
     \begin{figure}[htbp]
       \centering
       \begin{flushleft}
-        \textbf{Effect-guided Synthesis Rules} \quad \framebox{$\Gamma \vdash_{CT} \mathtt{\epsilon : T}$}
+        \textbf{Synthesis Rules} \quad \framebox{$\mathtt{\Gamma, E \vdash t :\tau, \epsilon}$}
       \end{flushleft}
       \[
         \dfrac
           {\mathtt{\Gamma\ \vdash\ t_1 : T_1 \quad \Gamma, x : T_1\ \vdash\ t_2 : T_2}}
           {\mathtt{\Gamma\ \vdash\ let\ x=t_1\ in\ t_2 : T_2}}
           \left(\textrm{T-LET}\right)
-        % hole
-        % syn->const
-        % syn->var
-        % syn->app
       \]
       \caption{Synthesis Rules of $\mathbf{Titan}$}
       \label{fig:synthesisRules}
@@ -333,6 +377,9 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 
 % qualitative result and remaining problems/future work
 \chapter{Conclusion}\label{chapter:conclusion}
+% TODO: summary of my work
+% TODO: qualitative result
+% TODO: remaining problems/future work
 
 \bibliographystyle{unsrt}
 \bibliography{
