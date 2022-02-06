@@ -224,7 +224,6 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
           & & \mid & \mathtt{if}\ \mathtt{b}\ \mathtt{then}\ \mathtt{e}\ \mathtt{else}\ \mathtt{e} \\
           & & \mid & \mathtt{let}\ \mathtt{x = e}\ \mathtt{in}\ \mathtt{e} \\
           & & \mid & \mathtt{fun}\ \mathtt{(x : \tau) : \tau\ "\{"\ \{\epsilon\}^{+}\ "\}" \to e} \\
-          & & \mid & \mathtt{hole : \tau} \\
           & & \mid & \mathtt{hole : \epsilon} \\
         \emph{Unary Operators} &
           \mathtt{uop} & ::= & ! \mid - \\
@@ -332,7 +331,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
             {\mathtt{false : bool}}
             \left(\textrm{T-FALSE}\right) \and
           \dfrac
-            {\mathtt{t_1 : bool \quad t_2 : \tau, \epsilon \quad t_3 : \tau, \epsilon}}
+            {\mathtt{\Gamma \vdash t_1 : bool \quad \Gamma \vdash t_2 : \tau, \epsilon \quad \Gamma \vdash t_3 : \tau, \epsilon}}
             {\mathtt{if\ t_1\ then\ t_2\ else\ t_3 : \tau, \epsilon}}
             \left(\textrm{T-IF}\right) \and
           % fun
@@ -342,7 +341,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
               \left(\textrm{T-ABS}\right) \and
             \dfrac
               {\mathtt{\Gamma \vdash t_1 : \tau_{11}, \epsilon_{11} \to \tau_{12}, \epsilon_{12} \quad \Gamma \vdash t_2 : \tau_{11}, \epsilon_{11}}}
-              {\mathtt{\Gamma \vdash t_1\ t_2 : \tau_{12}, \epsilon_{12}}}
+              {\mathtt{\Gamma, E \vdash t_1\ t_2 : \tau_{12}, \epsilon_{12}}}
               \left(\textrm{T-APP}\right) \and
           % hole
             \dfrac
@@ -365,15 +364,15 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
       \centering
       \begin{mathpar}
         \dfrac
-          {\mathtt{\Gamma, E \vdash t : string \quad \Gamma, E \vdash hole :  \epsilon_{open} \to \epsilon_{read} \to \epsilon_{close} \quad x_n \in FV(t_{i \in 1 \cdots n-1})}}
+          {\mathtt{\Gamma, E \vdash t : string \quad E \vdash hole : \epsilon_{open} \to \epsilon_{read} \to \epsilon_{close} \quad x_n \in FV(t_{i \in 1 \cdots n-1})}}
           {\mathtt{t\ hole\ x_n \to [x_n \mapsto fread(t) : string]}}
           \left(\textrm{S-READ}\right) \and
         \dfrac
-          {\mathtt{\Gamma, E \vdash t : int \quad \Gamma, E \vdash hole : string, \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
+          {\mathtt{\Gamma, E \vdash t : int \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
           {\mathtt{t\ hole \to fwrite(stdout, t)}}
           \left(\textrm{S-INTWRITE}\right) \and
         \dfrac
-          {\mathtt{\Gamma, E \vdash t : string \quad \Gamma, E \vdash hole : string, \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
+          {\mathtt{\Gamma, E \vdash t : string \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
           {\mathtt{t\ hole \to fwrite(stdout, t_1)}}
           \left(\textrm{S-STRINGWRITE}\right) \and
       \end{mathpar}
