@@ -26,7 +26,8 @@
 % Title Page
 \title{
   Bachelor Thesis \\
-  TODO: TITLE
+  % TODO: TITLE
+  Sequential Type/Effect-Guided Example-Based Program Synthesis
 }
 \author{
   03190413 Takemaru Kadoi
@@ -85,6 +86,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 
     % present situation(type is used in everyday development, generating code is required)
     % what to do(type is usable to boost efficient programming)
+    % TODO: mention AlphaCode/GitHub Copilot
     Today, more and more people are developing software.
     Thus, it can be said that an increasing number of people are writing programming languages proportionally.
     As a result of the current situation, the demand for secure code is also increasing.
@@ -114,6 +116,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 
     The program synthesis consists of 4 steps.
     \begin{enumerate}
+      % TODO: link these to figure components
       \item To receive specification from a user.
       \item To line up a candidate program.
       \item To check if the candidate program meets some requirements.
@@ -134,7 +137,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     The technique is an essential component of the program synthesis process.
     An algorithm determines how fast and how accurately a synthesizer will produce code, and it inseparable from the two factors, user input and search space.
 
-    I am going to deal with these questions in section \ref{section:syntheticProcess}, in which I cover how to synthesize a program.
+    I am going to deal with these questions in section \ref{section:synthesisProcess}, in which I cover how to synthesize a program.
 
   \section{Achievement} % contribution of this paper and intro to technical part
   % TODO: write after implementation
@@ -185,7 +188,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     There are other methods based on probability, such as genetic programming, machine learning, and neural programming.
     Although their solutions are not complete, they are highly efficient if you have quantitative objectives.
 
-  \section{Deduction-based Programming}
+  \section{Deduction-Based Programming}
     Deduction-based programming is also called programming by examples (PBE).
     This approach consists of intent specifications, program space, and search algorithms.
     Given input/output examples, a synthesizer generates a candidate program \textbf{P}.
@@ -195,7 +198,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     % TODO: add examples such as FlashFill
 
 
-  % FIXME: add \section{type-driven program synthesis}
+  % TODO: add \section{type-driven program synthesis}
 
 % my approach to the problem
 \chapter{Method}\label{chapter:method}
@@ -220,7 +223,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
           & & \mid & \mathtt{e\ e} \\
           & & \mid & \mathtt{if}\ \mathtt{b}\ \mathtt{then}\ \mathtt{e}\ \mathtt{else}\ \mathtt{e} \\
           & & \mid & \mathtt{let}\ \mathtt{x = e}\ \mathtt{in}\ \mathtt{e} \\
-          & & \mid & \mathtt{fun}\ \mathtt{\{(x : \tau)\}^{+} : [\tau \{\{\epsilon\}^{+}\}] \to e} \\
+          & & \mid & \mathtt{fun}\ \mathtt{\{(x : \tau)\}^{+} : \tau\ "\{"\ \{\epsilon\}^{+}\ "\}" \to e} \\
           & & \mid & \mathtt{hole : \tau} \\
           & & \mid & \mathtt{hole : \epsilon} \\
         \emph{Unary Operators} &
@@ -233,8 +236,8 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
           \mathtt{\tau} & ::= & \mathtt{bool \mid int \mid string \mid unit} \\
           & & \mid & \mathtt{any \mid \tau \to \tau} \\
         \emph{Effects} &
-          \mathtt{\epsilon} & ::= & \mathtt{open \mid read \mid write \mid close} \\
-          & & \mid & \mathtt{unit \mid any \mid \epsilon \to \epsilon} \\
+          \mathtt{\epsilon} & ::= & \mathtt{\epsilon_{open} \mid \epsilon_{read} \mid \epsilon_{write} \mid \epsilon_{close}} \\
+          & & \mid & \mathtt{\epsilon_{unit} \mid \epsilon_{any} \mid \epsilon \to \epsilon} \\
         \emph{Type Environment} &
           \mathtt{\Gamma} & ::= & \mathtt{\varnothing \mid x : \tau, \Gamma} \\
         \emph{Effect Environment} &
@@ -298,24 +301,26 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
         \caption{Evaluation Rules of $\mathbf{Titan}$}
         \label{fig:evalRules}
       \end{figure}
-    \subsection{Type System}
+
+    \subsection{Type/Effect System}
       % TODO: add explanation in the natural language
-      Figure \ref{fig:typeSystem} shows the type system of $\mathbf{Titan}$.
+      % TODO: say that I refrained from mentioning anything about primitive calculations.
+      Figure \ref{fig:typeEffectSystem} shows the type/effect system of $\mathbf{Titan}$.
       \begin{figure}[htbp]
         \centering
         \begin{flushleft}
-          \textbf{Type System} \quad \framebox{$\Gamma \vdash \mathtt{t : \tau}$}
+          \textbf{Type/Effect System} \quad \framebox{$\Gamma, \mathtt{E} \vdash \mathtt{t : \tau, \epsilon}$}
         \end{flushleft}
         \begin{mathpar}
           % var
           \dfrac
-            {\mathtt{x : \tau \in \Gamma}}
-            {\mathtt{\Gamma \vdash x : \tau}}
+            {\mathtt{x : \tau, \epsilon \in \Gamma, E}}
+            {\mathtt{\Gamma, E \vdash x : \tau, \epsilon}}
             \left(\textrm{T-VAR}\right) \and
           % let
           \dfrac
-            {\mathtt{\Gamma\ \vdash\ t_1 : T_1 \quad \Gamma, x : T_1\ \vdash\ t_2 : T_2}}
-            {\mathtt{\Gamma\ \vdash\ let\ x=t_1\ in\ t_2 : T_2}}
+            {\mathtt{\Gamma, E\ \vdash\ t_1 : \tau_1, \epsilon_1 \quad \Gamma, E, x : \tau_1\ \vdash\ t_2 : \tau_2, \epsilon_2}}
+            {\mathtt{\Gamma, E\ \vdash\ let\ x=t_1\ in\ t_2 : \tau_2, \epsilon_2}}
             \left(\textrm{T-LET}\right) \and
           % if
           \dfrac
@@ -327,17 +332,17 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
             {\mathtt{false : bool}}
             \left(\textrm{T-FALSE}\right) \and
           \dfrac
-            {\mathtt{t_1 : bool \quad t_2 : \tau \quad t_3 : \tau}}
-            {\mathtt{if\ t_1\ then\ t_2\ else\ t_3 : \tau}}
+            {\mathtt{t_1 : bool \quad t_2 : \tau, \epsilon \quad t_3 : \tau, \epsilon}}
+            {\mathtt{if\ t_1\ then\ t_2\ else\ t_3 : \tau, \epsilon}}
             \left(\textrm{T-IF}\right) \and
           % fun
             \dfrac
-              {\mathtt{\Gamma, x : \tau_1 \vdash t_2 : \tau_2}}
-              {\mathtt{\Gamma \vdash fun\ (x : \tau_1 \to t_2) : \tau_1 \to \tau_2}}
+              {\mathtt{\Gamma, x : \tau_1, \epsilon_1 \vdash t_2 : \tau_2, \epsilon_2}}
+              {\mathtt{\Gamma \vdash fun\ (x : \tau_1, \epsilon_1 \to t_2) : \tau_1, \epsilon_1 \to \tau_2, \epsilon_2}}
               \left(\textrm{T-ABS}\right) \and
             \dfrac
-              {\mathtt{\Gamma \vdash t_1 : \tau_{11} \to \tau_{12} \quad \Gamma \vdash t_2 : \tau_{11}}}
-              {\mathtt{\Gamma \vdash t_1\ t_2 : \tau_{12}}}
+              {\mathtt{\Gamma \vdash t_1 : \tau_{11}, \epsilon_{11} \to \tau_{12}, \epsilon_{12} \quad \Gamma \vdash t_2 : \tau_{11}, \epsilon_{11}}}
+              {\mathtt{\Gamma \vdash t_1\ t_2 : \tau_{12}, \epsilon_{12}}}
               \left(\textrm{T-APP}\right) \and
           % hole
             \dfrac
@@ -345,12 +350,12 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
               {\mathtt{hole \to unit}}
               \left(\textrm{T-HOLE}\right)
         \end{mathpar}
-        \caption{Type System of $\mathbf{Titan}$}
-        \label{fig:typeSystem}
+        \caption{Type/Effect System of $\mathbf{Titan}$}
+        \label{fig:typeEffectSystem}
       \end{figure}
 
-  \section{Synthetic Process}\label{section:syntheticProcess}
-    % FIXME: synthesis rules
+  \section{Synthesis Process}\label{section:synthesisProcess}
+    % TODO: synthesis rules
     % TODO: add explanation in the natural language
     Figure \ref{fig:synthesisRules} shows the synthesis rules of $\mathbf{Titan}$.
     \begin{figure}[htbp]
