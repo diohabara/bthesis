@@ -195,7 +195,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     % TODO: add examples such as FlashFill
 
 
-  % FIXME: add section[type-driven program synthesis]
+  % FIXME: add \section{type-driven program synthesis}
 
 % my approach to the problem
 \chapter{Method}\label{chapter:method}
@@ -214,9 +214,9 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
       \[
       \begin{array}{lccl}
         \emph{Values} &
-          \mathtt{v} & ::= & \mathtt{unit \mid boolean \mid integer \mid string }\\
+          \mathtt{v} & ::= & \mathtt{boolean \mid integer \mid string \mid unit}\\
         \emph{Expressions} &
-          \mathtt{e} & ::= & \mathtt{v} \mid \mathtt{x} \mid \mathtt{e\ uop\ e \mid e\ bop\ e} \\
+          \mathtt{e} & ::= & \mathtt{v} \mid \mathtt{x} \mid \mathtt{uop\ e \mid e\ bop\ e} \\
           & & \mid & \mathtt{e\ e} \\
           & & \mid & \mathtt{if}\ \mathtt{b}\ \mathtt{then}\ \mathtt{e}\ \mathtt{else}\ \mathtt{e} \\
           & & \mid & \mathtt{let}\ \mathtt{x = e}\ \mathtt{in}\ \mathtt{e} \\
@@ -251,7 +251,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
   \section{Semantics}
     \subsection{Evaluation Rules}
       % TODO: add explanation in the natural language
-      Figure \ref{fig:evalRules} shows the syntax of $\mathbf{Titan}$.
+      Figure \ref{fig:evalRules} shows the evaluation rules of $\mathbf{Titan}$.
       \begin{figure}[htbp]
         \centering
         \begin{flushleft}
@@ -293,14 +293,14 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
           \dfrac
             {}
             {\mathtt{hole \to unit}}
+            \left(\textrm{E-HOLE}\right)
         \end{mathpar}
         \caption{Evaluation Rules of $\mathbf{Titan}$}
         \label{fig:evalRules}
       \end{figure}
     \subsection{Type System}
-      % FIXME: type system
       % TODO: add explanation in the natural language
-      Figure \ref{fig:typeSystem} shows the syntax of $\mathbf{Titan}$.
+      Figure \ref{fig:typeSystem} shows the type system of $\mathbf{Titan}$.
       \begin{figure}[htbp]
         \centering
         \begin{flushleft}
@@ -339,27 +339,31 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
               {\mathtt{\Gamma \vdash t_1 : \tau_{11} \to \tau_{12} \quad \Gamma \vdash t_2 : \tau_{11}}}
               {\mathtt{\Gamma \vdash t_1\ t_2 : \tau_{12}}}
               \left(\textrm{T-APP}\right) \and
-          % TODO:hole
+          % hole
+            \dfrac
+              {}
+              {\mathtt{hole \to unit}}
+              \left(\textrm{T-HOLE}\right)
         \end{mathpar}
         \caption{Type System of $\mathbf{Titan}$}
         \label{fig:typeSystem}
       \end{figure}
 
   \section{Synthetic Process}\label{section:syntheticProcess}
-    % TODO: effect system
+    % FIXME: synthesis rules
     % TODO: add explanation in the natural language
-    Figure \ref{fig:synthesisRules} shows the syntax of $\mathbf{Titan}$.
+    Figure \ref{fig:synthesisRules} shows the synthesis rules of $\mathbf{Titan}$.
     \begin{figure}[htbp]
       \centering
       \begin{flushleft}
         \textbf{Synthesis Rules} \quad \framebox{$\mathtt{\Gamma, E \vdash t :\tau, \epsilon}$}
       \end{flushleft}
-      \[
+      \begin{mathpar}
         \dfrac
-          {\mathtt{\Gamma\ \vdash\ t_1 : T_1 \quad \Gamma, x : T_1\ \vdash\ t_2 : T_2}}
-          {\mathtt{\Gamma\ \vdash\ let\ x=t_1\ in\ t_2 : T_2}}
-          \left(\textrm{T-LET}\right)
-      \]
+          {\mathtt{}}
+          {\mathtt{}}
+          \left(\textrm{}\right) \and
+      \end{mathpar}
       \caption{Synthesis Rules of $\mathbf{Titan}$}
       \label{fig:synthesisRules}
     \end{figure}
