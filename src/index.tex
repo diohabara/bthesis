@@ -210,11 +210,11 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     % TODO: add explanation in the natural language
     Figure \ref{fig:syntax} shows the syntax of $\mathbf{Titan}$.
     \begin{figure}[htbp]
-      \centering
       \begin{flushleft}
         \textbf{Syntax}
       \end{flushleft}
       \[
+      \centering
       \begin{array}{lccl}
         \emph{Values} &
           \mathtt{v} & ::= & \mathtt{boolean \mid integer \mid string \mid unit}\\
@@ -223,7 +223,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
           & & \mid & \mathtt{e\ e} \\
           & & \mid & \mathtt{if}\ \mathtt{b}\ \mathtt{then}\ \mathtt{e}\ \mathtt{else}\ \mathtt{e} \\
           & & \mid & \mathtt{let}\ \mathtt{x = e}\ \mathtt{in}\ \mathtt{e} \\
-          & & \mid & \mathtt{fun}\ \mathtt{\{(x : \tau)\}^{+} : \tau\ "\{"\ \{\epsilon\}^{+}\ "\}" \to e} \\
+          & & \mid & \mathtt{fun}\ \mathtt{(x : \tau) : \tau\ "\{"\ \{\epsilon\}^{+}\ "\}" \to e} \\
           & & \mid & \mathtt{hole : \tau} \\
           & & \mid & \mathtt{hole : \epsilon} \\
         \emph{Unary Operators} &
@@ -256,10 +256,10 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
       % TODO: add explanation in the natural language
       Figure \ref{fig:evalRules} shows the evaluation rules of $\mathbf{Titan}$.
       \begin{figure}[htbp]
-        \centering
         \begin{flushleft}
           \textbf{Evaluation Rules} \quad \framebox{$\mathtt{t \to t'}$}
         \end{flushleft}
+        \centering
         \begin{mathpar}
           % let
           \dfrac
@@ -307,10 +307,10 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
       % TODO: say that I refrained from mentioning anything about primitive calculations.
       Figure \ref{fig:typeEffectSystem} shows the type/effect system of $\mathbf{Titan}$.
       \begin{figure}[htbp]
-        \centering
         \begin{flushleft}
           \textbf{Type/Effect System} \quad \framebox{$\Gamma, \mathtt{E} \vdash \mathtt{t : \tau, \epsilon}$}
         \end{flushleft}
+        \centering
         \begin{mathpar}
           % var
           \dfrac
@@ -359,15 +359,23 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     % TODO: add explanation in the natural language
     Figure \ref{fig:synthesisRules} shows the synthesis rules of $\mathbf{Titan}$.
     \begin{figure}[htbp]
-      \centering
       \begin{flushleft}
         \textbf{Synthesis Rules} \quad \framebox{$\mathtt{\Gamma, E \vdash t :\tau, \epsilon}$}
       \end{flushleft}
+      \centering
       \begin{mathpar}
         \dfrac
-          {\mathtt{}}
-          {\mathtt{}}
-          \left(\textrm{}\right) \and
+          {\mathtt{\Gamma, E \vdash t : string \quad \Gamma, E \vdash hole :  \epsilon_{open} \to \epsilon_{read} \to \epsilon_{close} \quad x_n \in FV(t_{i \in 1 \cdots n-1})}}
+          {\mathtt{t\ hole\ x_n \to [x_n \mapsto fread(t) : string]}}
+          \left(\textrm{S-READ}\right) \and
+        \dfrac
+          {\mathtt{\Gamma, E \vdash t : int \quad \Gamma, E \vdash hole : string, \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
+          {\mathtt{t\ hole \to fwrite(stdout, t)}}
+          \left(\textrm{S-INTWRITE}\right) \and
+        \dfrac
+          {\mathtt{\Gamma, E \vdash t : string \quad \Gamma, E \vdash hole : string, \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
+          {\mathtt{t\ hole \to fwrite(stdout, t_1)}}
+          \left(\textrm{S-STRINGWRITE}\right) \and
       \end{mathpar}
       \caption{Synthesis Rules of $\mathbf{Titan}$}
       \label{fig:synthesisRules}
