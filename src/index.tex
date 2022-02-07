@@ -224,7 +224,10 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
           & & \mid & \mathtt{if}\ \mathtt{b}\ \mathtt{then}\ \mathtt{e}\ \mathtt{else}\ \mathtt{e} \\
           & & \mid & \mathtt{let}\ \mathtt{x = e}\ \mathtt{in}\ \mathtt{e} \\
           & & \mid & \mathtt{fun}\ \mathtt{(x : \tau) : \tau\ "\{"\ \{\epsilon\}^{+}\ "\}" \to e} \\
+          & & \mid & \mathtt{hole : \tau} \\
           & & \mid & \mathtt{hole : \epsilon} \\
+          & & \mid & \mathtt{fread(e)} \\
+          & & \mid & \mathtt{fwrite(e)} \\
         \emph{Unary Operators} &
           \mathtt{uop} & ::= & ! \mid - \\
         \emph{Binary Operators} &
@@ -232,8 +235,8 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
           & & \mid & \mathtt{=} \mid \mathtt{\neq} \mid \mathtt{<} \mid \mathtt{\leq} \\
           & & \mid & \mathtt{>} \mid \mathtt{\geq} \mid \mathtt{\land} \mid \mathtt{\lor} \\
         \emph{Types} &
-          \mathtt{\tau} & ::= & \mathtt{bool \mid int \mid string \mid unit} \\
-          & & \mid & \mathtt{any \mid \tau \to \tau} \\
+          \mathtt{\tau} & ::= & \mathtt{\tau_{bool} \mid \tau_{int} \mid \tau_{string} \mid \tau_{unit}} \\
+          & & \mid & \mathtt{\tau_{any} \mid \tau \to \tau} \\
         \emph{Effects} &
           \mathtt{\epsilon} & ::= & \mathtt{\epsilon_{open} \mid \epsilon_{read} \mid \epsilon_{write} \mid \epsilon_{close}} \\
           & & \mid & \mathtt{\epsilon_{unit} \mid \epsilon_{any} \mid \epsilon \to \epsilon} \\
@@ -262,40 +265,49 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
         \begin{mathpar}
           % let
           \dfrac
-            {\mathtt{t_1 \to t_1'}}
-            {\mathtt{let\ x=t_1\ in\ t_2 \to\ let\ x=t_1'\ in\ t_2}}
+            {\mathtt{t_1 \longrightarrow t_1'}}
+            {\mathtt{let\ x=t_1\ in\ t_2 \longrightarrow let\ x=t_1'\ in\ t_2}}
             \left(\textrm{E-LET}\right) \and
           % if
           \dfrac
             {}
-            {\mathtt{if\ true\ then\ t_2\ else\ t_3 \to t_2}}
+            {\mathtt{if\ true\ then\ t_2\ else\ t_3 \longrightarrow t_2}}
             \left(\textrm{E-IFTRUE}\right) \and
           \dfrac
             {}
-            {\mathtt{if\ false\ then\ t_2\ else\ t_3 \to t_3}}
+            {\mathtt{if\ false\ then\ t_2\ else\ t_3 \longrightarrow t_3}}
             \left(\textrm{E-IFFALSE}\right) \and
           \dfrac
-            {\mathtt{t_1 \to t_1'}}
-            {\mathtt{if\ t_1\ then\ t_2\ else\ t_3 \to if\ t_1'\ then\ t_2\ else\ t_3}}
+            {\mathtt{t_1 \longrightarrow t_1'}}
+            {\mathtt{if\ t_1\ then\ t_2\ else\ t_3 \longrightarrow if\ t_1'\ then\ t_2\ else\ t_3}}
             \left(\textrm{E-IF}\right) \and
           % fun
           \dfrac
-            {\mathtt{t_1 \to t_1'}}
-            {\mathtt{t_1\ t_2 \to t_1'\ t_2}}
+            {\mathtt{t_1 \longrightarrow t_1'}}
+            {\mathtt{t_1\ t_2 \longrightarrow t_1'\ t_2}}
             \left(\textrm{E-APP1}\right) \and
           \dfrac
-            {\mathtt{t_2 \to t_2'}}
-            {\mathtt{t_1\ t_2 \to t_1\ t_2'}}
+            {\mathtt{t_2 \longrightarrow t_2'}}
+            {\mathtt{t_1\ t_2 \longrightarrow t_1\ t_2'}}
             \left(\textrm{E-APP2}\right) \and
           \dfrac
             {}
-            {\mathtt{(fun\ x \to t_{12}) v_2 \to [x \mapsto v_2]t_{12}}}
+            {\mathtt{(fun\ x \to t_{12}) v_2 \longrightarrow [x \mapsto v_2]t_{12}}}
             \left(\textrm{E-APPABS}\right) \and
+          % I/O
+          \dfrac
+            {\mathtt{t}}
+            {\mathtt{fread(t) \longrightarrow string}}
+            \left(\textrm{E-READ}\right) \and
+          \dfrac
+            {\mathtt{t}}
+            {\mathtt{fwrite(t) \longrightarrow unit}}
+            \left(\textrm{E-WRITE}\right) \and
           % hole
           \dfrac
             {}
-            {\mathtt{hole \to unit}}
-            \left(\textrm{E-HOLE}\right)
+            {\mathtt{hole \longrightarrow unit}}
+            \left(\textrm{E-HOLE}\right) \and
         \end{mathpar}
         \caption{Evaluation Rules of $\mathbf{Titan}$}
         \label{fig:evalRules}
@@ -307,7 +319,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
       Figure \ref{fig:typeEffectSystem} shows the type/effect system of $\mathbf{Titan}$.
       \begin{figure}[htbp]
         \begin{flushleft}
-          \textbf{Type/Effect System} \quad \framebox{$\Gamma, \mathtt{E} \vdash \mathtt{t : \tau, \epsilon}$}
+          \textbf{Type/Effect System} \quad \framebox{$\mathtt{\Gamma, E} \vdash \mathtt{t : \tau, \epsilon}$}
         \end{flushleft}
         \centering
         \begin{mathpar}
@@ -318,43 +330,55 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
             \left(\textrm{T-VAR}\right) \and
           % let
           \dfrac
-            {\mathtt{\Gamma, E\ \vdash\ t_1 : \tau_1, \epsilon_1 \quad \Gamma, E, x : \tau_1\ \vdash\ t_2 : \tau_2, \epsilon_2}}
+            {\mathtt{\Gamma, E\ \vdash\ t_1 : \tau_1, \epsilon_1 \quad \Gamma, E \vdash x : \tau_1\ \vdash\ t_2 : \tau_2, \epsilon_2}}
             {\mathtt{\Gamma, E\ \vdash\ let\ x=t_1\ in\ t_2 : \tau_2, \epsilon_2}}
             \left(\textrm{T-LET}\right) \and
           % if
           \dfrac
             {}
-            {\mathtt{true : bool}}
+            {\mathtt{true : \tau_{bool}}}
             \left(\textrm{T-TRUE}\right) \and
           \dfrac
             {}
-            {\mathtt{false : bool}}
+            {\mathtt{false : \tau_{bool}}}
             \left(\textrm{T-FALSE}\right) \and
           \dfrac
-            {\mathtt{\Gamma \vdash t_1 : bool \quad \Gamma \vdash t_2 : \tau, \epsilon \quad \Gamma \vdash t_3 : \tau, \epsilon}}
+            {\mathtt{\Gamma \vdash t_1 : bool \quad \Gamma, E \vdash t_2 : \tau, \epsilon \quad \Gamma, E \vdash t_3 : \tau, \epsilon}}
             {\mathtt{if\ t_1\ then\ t_2\ else\ t_3 : \tau, \epsilon}}
             \left(\textrm{T-IF}\right) \and
           % fun
-            \dfrac
-              {\mathtt{\Gamma, x : \tau_1, \epsilon_1 \vdash t_2 : \tau_2, \epsilon_2}}
-              {\mathtt{\Gamma \vdash fun\ (x : \tau_1, \epsilon_1 \to t_2) : \tau_1, \epsilon_1 \to \tau_2, \epsilon_2}}
-              \left(\textrm{T-ABS}\right) \and
-            \dfrac
-              {\mathtt{\Gamma \vdash t_1 : \tau_{11}, \epsilon_{11} \to \tau_{12}, \epsilon_{12} \quad \Gamma \vdash t_2 : \tau_{11}, \epsilon_{11}}}
-              {\mathtt{\Gamma, E \vdash t_1\ t_2 : \tau_{12}, \epsilon_{12}}}
-              \left(\textrm{T-APP}\right) \and
+          \dfrac
+            {\mathtt{\Gamma, x : \tau_1, E, x : \epsilon_1 \vdash t_2 : \tau_2, \epsilon_2}}
+            {\mathtt{\Gamma \vdash fun\ (x : \tau_1, \epsilon_1 \to t_2) : \tau_1, \epsilon_1 \to \tau_2, \epsilon_2}}
+            \left(\textrm{T-ABS}\right) \and
+          \dfrac
+            {\mathtt{\Gamma, E \vdash t_1 : \tau_{11}, \epsilon_{11} \to \tau_{12}, \epsilon_{12} \quad \Gamma, E \vdash t_2 : \tau_{11}, \epsilon_{11}}}
+            {\mathtt{\Gamma, E \vdash t_1\ t_2 : \tau_{12}, \epsilon_{12}}}
+            \left(\textrm{T-APP}\right) \and
+          % I/O
+          \dfrac
+            {\mathtt{\Gamma \vdash t_1 : \tau_{string}}}
+            {\mathtt{\Gamma, E \vdash fread(t_1) : \epsilon_{open} \to \epsilon_{read} \to \epsilon_{close} \longrightarrow t_2 : \tau_{string}}}
+            \left(\textrm{T-READ}\right) \and
+          \dfrac
+            {\mathtt{\Gamma \vdash t_1 : \{\tau_{bool}, \tau_{int}, \tau_{string}\}}}
+            {\mathtt{\Gamma, E \vdash fwrite(t_1) : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close} \longrightarrow t_2 : \tau_{unit}}}
+            \left(\textrm{T-WRITE}\right) \and
           % hole
             \dfrac
               {}
-              {\mathtt{hole \to unit}}
-              \left(\textrm{T-HOLE}\right)
+              {\mathtt{hole : \tau_{unit} \longrightarrow unit : \tau_{unit}}}
+              \left(\textrm{T-HOLET}\right) \and
+            \dfrac
+              {}
+              {\mathtt{hole : \epsilon_{unit} \longrightarrow unit : \epsilon_{unit}}}
+              \left(\textrm{T-HOLEE}\right) \and
         \end{mathpar}
         \caption{Type/Effect System of $\mathbf{Titan}$}
         \label{fig:typeEffectSystem}
       \end{figure}
 
   \section{Synthesis Process}\label{section:synthesisProcess}
-    % TODO: synthesis rules
     % TODO: add explanation in the natural language
     Figure \ref{fig:synthesisRules} shows the synthesis rules of $\mathbf{Titan}$.
     \begin{figure}[htbp]
@@ -363,17 +387,37 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
       \end{flushleft}
       \centering
       \begin{mathpar}
+        % bool
         \dfrac
-          {\mathtt{\Gamma, E \vdash t : string \quad E \vdash hole : \epsilon_{open} \to \epsilon_{read} \to \epsilon_{close} \quad x_n \in FV(t_{i \in 1 \cdots n-1})}}
-          {\mathtt{t\ hole\ x_n \to [x_n \mapsto fread(t) : string]}}
+          {\mathtt{E \vdash hole : \tau_{bool}}}
+          {\mathtt{hole \longrightarrow boolean}}
+          \left(\textrm{S-HOLEBOOL}\right) \and
+        % int
+        \dfrac
+          {\mathtt{E \vdash hole : \tau_{integer}}}
+          {\mathtt{hole \longrightarrow integer}}
+          \left(\textrm{S-HOLEINT}\right) \and
+        % string
+        \dfrac
+          {\mathtt{E \vdash hole : \tau_{string}}}
+          {\mathtt{hole \longrightarrow string}}
+          \left(\textrm{S-HOLESTRING}\right) \and
+        % I/O
+        \dfrac
+          {\mathtt{\Gamma \vdash t : \tau_{int} \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
+          {\mathtt{t\ hole \longrightarrow fwrite(t)}}
           \left(\textrm{S-READ}\right) \and
         \dfrac
-          {\mathtt{\Gamma, E \vdash t : int \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
-          {\mathtt{t\ hole \to fwrite(stdout, t)}}
+          {\mathtt{\Gamma \vdash t : \tau_{bool} \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
+          {\mathtt{t\ hole \longrightarrow fwrite(t_1)}}
+          \left(\textrm{S-BOOLWRITE}\right) \and
+        \dfrac
+          {\mathtt{\Gamma \vdash t : \tau_{int} \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
+          {\mathtt{t\ hole \longrightarrow fwrite(t)}}
           \left(\textrm{S-INTWRITE}\right) \and
         \dfrac
-          {\mathtt{\Gamma, E \vdash t : string \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
-          {\mathtt{t\ hole \to fwrite(stdout, t_1)}}
+          {\mathtt{\Gamma \vdash t : \tau_{string} \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
+          {\mathtt{t\ hole \longrightarrow fwrite(t_1)}}
           \left(\textrm{S-STRINGWRITE}\right) \and
       \end{mathpar}
       \caption{Synthesis Rules of $\mathbf{Titan}$}
