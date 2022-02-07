@@ -389,19 +389,19 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
       \begin{mathpar}
         % bool
         \dfrac
-          {\mathtt{E \vdash hole : \tau_{bool}}}
+          {\mathtt{\Gamma \vdash hole : \tau_{bool}}}
           {\mathtt{hole \longrightarrow boolean}}
-          \left(\textrm{S-HOLEBOOL}\right) \and
+          \left(\textrm{S-BOOLHOLE}\right) \and
         % int
         \dfrac
-          {\mathtt{E \vdash hole : \tau_{integer}}}
+          {\mathtt{\Gamma \vdash hole : \tau_{integer}}}
           {\mathtt{hole \longrightarrow integer}}
-          \left(\textrm{S-HOLEINT}\right) \and
+          \left(\textrm{S-INTHOLE}\right) \and
         % string
         \dfrac
-          {\mathtt{E \vdash hole : \tau_{string}}}
+          {\mathtt{\Gamma \vdash hole : \tau_{string}}}
           {\mathtt{hole \longrightarrow string}}
-          \left(\textrm{S-HOLESTRING}\right) \and
+          \left(\textrm{S-STRINGHOLE}\right) \and
         % I/O
         \dfrac
           {\mathtt{\Gamma \vdash t : \tau_{int} \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
