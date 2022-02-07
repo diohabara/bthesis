@@ -26,8 +26,7 @@
 % Title Page
 \title{
   Bachelor Thesis \\
-  % TODO: TITLE
-  Sequential Type/Effect-Guided Example-Based Program Synthesis
+  Type- and Sequential Effect-Guided Programming by Example
 }
 \author{
   03190413 Takemaru Kadoi
@@ -53,8 +52,21 @@
 \chapter*{Acknowledgment}
 This research was supervised by Prof. Fujita at the University of Tokyo and supported by Assistant Prof. Sekiyama at National Institute of Technology. \\
 I thank my colleagues at the University of Tokyo, Miyasaka-san, Koike-san, Yu-san, Nagasawa-san, and Yi-san.
-% TODO: add twitter accounts
-I also show my gratitude to my good friends, hnkz, Akio, Saeki, Arahata, Hori, Naito, Chen, and Sakura.
+I also show my gratitude to my good friends,
+  \href{https://twitter.com/97sktk}{Saeki},
+  \href{https://twitter.com/9SKEgI72RcOWxB8}{haru},
+  \href{https://twitter.com/LdCqh1}{Mao Kaneyasu},
+  \href{https://twitter.com/NaomiatLibrary}{Naomi},
+  \href{https://twitter.com/Tmstmput}{Tsumiki},
+  \href{https://twitter.com/akio_utsuroido}{Akio},
+  \href{https://twitter.com/gasukkkgesu}{Gasu},
+  \href{https://twitter.com/hamburg_soshun}{Soshun},
+  \href{https://twitter.com/macrokoala}{Chen},
+  \href{https://twitter.com/nozo_moto}{Nozomi},
+  \href{https://twitter.com/readonly_true}{Arahata},
+  \href{https://twitter.com/wan__nyan__wan}{hnkz},
+  and
+  Sakura.
 
 % overview of the research topic
 \chapter{Abstract} \label{chapter:abstract}
@@ -85,16 +97,19 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     I, however, focus only on a programmer point of view.
 
     % present situation(type is used in everyday development, generating code is required)
-    % what to do(type is usable to boost efficient programming)
-    % TODO: mention AlphaCode/GitHub Copilot
     Today, more and more people are developing software.
     Thus, it can be said that an increasing number of people are writing programming languages proportionally.
+    Tools to assist programmers are appearing more and more.
+    For example, GitHub Copilot based on the research by Chen et al. \cite{Chen:2021} completes source code from function names and comments.
+    It is obvious that it uses program synthesis techniques.
+    DeepMind has also recently developed AlphaCode \cite{Li:2022}, an AI that can automatically solve competitive programming problems.
     As a result of the current situation, the demand for secure code is also increasing.
     Recent software development is facilitated by programming languages that are based on type systems, such as Rust, TypeScript and Scala.
     This shows that the type theory is not only an interesting but also a practical research topic, and modern programmers are familiar with the notion.
     Additionally, the increasing demand illustrates the need for more time-efficient and productive programming.
     The program synthesis fits for this requirement because it is a research topic to deal with easy code generation.
 
+    % what to do(type is usable to boost efficient programming)
     I am motivated by these trends in my research.
     My goal is to help people develop reliable software easily through the type theory and the program synthesis.
     An additional point that I would like to incorporate into my research is the effect system, which is an informative and descriptive system for programming languages.
@@ -116,7 +131,6 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 
     The program synthesis consists of 4 steps.
     \begin{enumerate}
-      % TODO: link these to figure components
       \item To receive specification from a user.
       \item To line up a candidate program.
       \item To check if the candidate program meets some requirements.
@@ -140,7 +154,14 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     I am going to deal with these questions in section \ref{section:synthesisProcess}, in which I cover how to synthesize a program.
 
   \section{Achievement} % contribution of this paper and intro to technical part
-  % TODO: write after implementation
+  In this research, I have formulated a type and effect system to efficiently synthesize programs by examples.
+  By using types and effects, you can synthesize code that would be impossible to synthesize without the use of types and effects due to the explosion of time complexity.
+
+  I defined my own programming language syntax.
+  I then defined how that programming language would be evaluated.
+  I defined the type and effect system that the programming language should follow to ensure its type safety.
+  If a language is mathematically guaranteed to be safe on its runtime, it can be used for large scale software development.
+  I have formulated a system for program synthesis targeting this language, using parts of it as specifications.
 
 \chapter{Related Work}\label{chapter:relatedWork}
   The purpose of this chapter is to provide you with a brief overview of existing search techniques that seem to be relevant. As I said in the previous section, one of the factors that have improved the tractability of search space is new search techniques.
@@ -225,7 +246,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
           & & \mid & \mathtt{let}\ \mathtt{x = e}\ \mathtt{in}\ \mathtt{e} \\
           & & \mid & \mathtt{fun}\ \mathtt{(x : \tau) : \tau\ "\{"\ \{\epsilon\}^{+}\ "\}" \to e} \\
           & & \mid & \mathtt{hole : \tau} \\
-          & & \mid & \mathtt{hole : \epsilon} \\
+          & & \mid & \mathtt{hole : "\{" \{\epsilon\}^{+} "\}"} \\
           & & \mid & \mathtt{fread(e)} \\
           & & \mid & \mathtt{fwrite(e)} \\
         \emph{Unary Operators} &
