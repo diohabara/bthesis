@@ -409,7 +409,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
           \left(\textrm{S-READ}\right) \and
         \dfrac
           {\mathtt{\Gamma \vdash t : \tau_{bool} \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
-          {\mathtt{t\ hole \longrightarrow fwrite(t_1)}}
+          {\mathtt{t\ hole \longrightarrow fwrite(t)}}
           \left(\textrm{S-BOOLWRITE}\right) \and
         \dfrac
           {\mathtt{\Gamma \vdash t : \tau_{int} \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
@@ -417,7 +417,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
           \left(\textrm{S-INTWRITE}\right) \and
         \dfrac
           {\mathtt{\Gamma \vdash t : \tau_{string} \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
-          {\mathtt{t\ hole \longrightarrow fwrite(t_1)}}
+          {\mathtt{t\ hole \longrightarrow fwrite(t)}}
           \left(\textrm{S-STRINGWRITE}\right) \and
       \end{mathpar}
       \caption{Synthesis Rules of $\mathbf{Titan}$}
