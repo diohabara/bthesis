@@ -168,8 +168,6 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
   It is pertinent to note that even though I will describe some techniques as separate ones, they are all interconnected. A type of approach is used by another type of approach and vice versa. This categorization is just to clarify what aspects different algorithms have in common.
 
   \section{Enumerative Search}
-  % TODO: more examples of top-down and bottom-up search
-  % TODO: add images
   Enumeration is the most efficient way of searching since it overlooks nothing.
   Nevertheless, it has a trade-off.
   The search space is enormous.
@@ -196,9 +194,22 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     Using these characteristics, Jah et al. produced a complete SMT encoding for the whole program synthesis.
 
   \section{Stochastic Search}
-    Stochastic search is another approach I discuss in this paper.
+    Stochastic search is another approach I discuss in this section.
     Stochastic methods use the distribution over the space of programs in the hypothesis space that is conditioned on the specification to obtain a consistent program.
     The learned distribution will lead to a better prediction rate of programs that correspond to the specification.
+
+    Figure \ref{stochastic} is an example of stochastic search.
+    Suppose each circle is a candidate of an AST node and each arrow points to the syntactic candidates of the next node with its percentage.
+    Stochastic search technique uses the probabilities to determine what code to synthesize.
+    The technique uses code base to predict the percentages.
+    \textit{STOKE} \cite{Schkufza:2016}, an implementation on program optimization uses stochastic search like this.
+
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=11cm]{images/stochastic.pdf}
+      \caption{An example of stochastic search}
+      \label{stochastic}
+    \end{figure}
 
     The stochastic Syntax Guided Synthesis (SyGuS) solver uses the Metropolis-Hastings algorithm \cite{alur:2013}.
     We can represent the space of all possible programs in the hypothesis space with a large dense graph.
