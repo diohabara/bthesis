@@ -49,21 +49,23 @@
 \newpage
 
 \chapter*{Acknowledgment}
-This research was supervised by Prof. Fujita at the University of Tokyo and supported by Assistant Prof. Sekiyama at National Institute of Technology. \\
+This research was supervised by Prof. Fujita at the University of Tokyo and supported by Assistant Prof. Sekiyama at National Institute of Technology.
+
 I thank my colleagues at the University of Tokyo, Miyasaka-san, Koike-san, Yu-san, Nagasawa-san, and Yi-san.
+
 I also show my gratitude to my good friends,
   \href{https://twitter.com/97sktk}{Saeki},
   \href{https://twitter.com/9SKEgI72RcOWxB8}{haru},
   \href{https://twitter.com/LdCqh1}{Mao Kaneyasu},
   \href{https://twitter.com/NaomiatLibrary}{Naomi},
   \href{https://twitter.com/TaKOBKi}{TaKO8Ki},
-  \href{https://twitter.com/Tmstmput}{Tsumiki},
+  \href{https://twitter.com/Tmstmput}{Tsumiki Hori},
   \href{https://twitter.com/akio_utsuroido}{Akio},
   \href{https://twitter.com/gasukkkgesu}{Gasu},
-  \href{https://twitter.com/hamburg_soshun}{Soshun},
+  \href{https://twitter.com/hamburg_soshun}{Soshun Naito},
   \href{https://twitter.com/macrokoala}{Chen},
-  \href{https://twitter.com/nozo_moto}{Nozomi},
-  \href{https://twitter.com/readonly_true}{Arahata},
+  \href{https://twitter.com/nozo_moto}{Nozomi Morimoto},
+  \href{https://twitter.com/readonly_true}{Shun Arahata},
   \href{https://twitter.com/wan__nyan__wan}{hnkz},
   and
   \href{https://twitter.com/cheripori}{Sakura}.
@@ -79,8 +81,12 @@ With natural language, computers may not be able to understand the meaning, and 
 This paper examines the use of a type and effect system as a specification that is easy to understand by both humans and computers alike. The types are properties of data and can be used to describe the input and output of a function. The effects, which can explain the internal processes of a function, represent a transition in a state, such as the value of a variable, shared memory between threads, and I/O operations.
 Types are familiar to programmers who use statically typed languages.
 Many users are unfamiliar with effects, but the effects can describe the internal behavior of programs and are easy to understand if designed properly.
-By utilizing type and effect, I can efficiently explore candidate code and demonstrate that the intended code will be generated. I will demonstrate some specifications and an example of a program that has been generated based on these specifications.
-\TS{(DONE)How do you synthesize programs with types and effects?  What experiments are (planed to be) conducted?  How about results?} \TK{describe how to synthesize and what to do.}
+By utilizing types and effects, I formalize an efficient way to explore candidate code.
+Types were useful to synthesize values and effects were usable to synthesize function expressions.
+I will demonstrate some specifications and an example of a program that has been generated based on these specifications.
+After the demonstration, I give some considerations to the current problems the synthesizer has and how to improve the synthesizer.
+% \TS{(DONE)How do you synthesize programs with types and effects?  What experiments are (planed to be) conducted?  How about results?}
+% \TK{describe how to synthesize and what to do.}
 
 In Chapter \ref{chapter:introduction}, I discuss the motivation for this research, what program synthesis is, and existing methods  The details of the existing methods can be discussed in the related work chapter, which should be  put before the conclusion.
 I give examples of existing researches in Chapter \ref{chapter:relatedWork}.
@@ -89,7 +95,8 @@ I present in Chapter \ref{chapter:experiment} the results obtained by the propos
 Chapter \ref{chapter:conclusion} concludes with a summary of the results and evaluation, as well as future issues.
 
 \chapter{Introduction}\label{chapter:introduction}
-\TS{Introduction should include a summary of what this thesis achieves.  The details of the existing methods can be discussed in the related work section, which should be  put before the conclusion.} \TK{move "Related Work"(previous "Existing methods") to after this chapter and add section "Achievement" in this chapter}
+% \TS{Introduction should include a summary of what this thesis achieves.  The details of the existing methods can be discussed in the related work section, which should be  put before the conclusion.}
+% \TK{move "Related Work"(previous "Existing methods") to after this chapter and add section "Achievement" in this chapter}
   \section{Motivation}
     The purpose of this research is to contribute to programming efficiently and safely in the current software-centric world that demands for many lines of secure code.
     I tackle this problem by using a type-effect system and a technique of program synthesis.
@@ -162,80 +169,6 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
   I defined the type and effect system that the programming language should follow to ensure its type safety.
   If a language is mathematically guaranteed to be safe on its runtime, it can be used for large scale software development.
   I have formulated a system for program synthesis targeting this language, using parts of it as specifications.
-
-\chapter{Related Work}\label{chapter:relatedWork}
-  The purpose of this chapter is to provide you with a brief overview of existing search techniques that seem to be relevant. As I said in the previous section, one of the factors that have improved the tractability of search space is new search techniques.
-  It is pertinent to note that even though I will describe some techniques as separate ones, they are all interconnected. A type of approach is used by another type of approach and vice versa. This categorization is just to clarify what aspects different algorithms have in common.
-
-  \section{Enumerative Search}
-  Enumeration is the most efficient way of searching since it overlooks nothing.
-  Nevertheless, it has a trade-off.
-  The search space is enormous.
-  In order to solve in realistic time, you need to prune some candidate programs.
-  Several pruning techniques have been developed.
-  The basic idea is to enumerate all trees and prune trees equivalent to those already explored.
-  I briefly introduce two of them, top-down tree search and bottom-up tree search.
-  Top-down tree search starts from the grammar of programming languages, which means that they search nonterminals in terminals.
-  On the other hand, bottom-up tree search starts from expressions.
-
-  \section{Constraint Solving}
-    Constraint solving is \textit{finding an instantiation of free variables in a formula}. This requires more rigorous specification than other techniques and syntactic program restrictions which are encoded so that you can find true models for a correct program.
-    I will give you some explanations about component-based synthesis proposed by Jha et al. \cite{jha:2010}.
-    This type of synthesis encodes the language and its spec into SAT/SMT constraints precisely.
-    An SMT solver like \textit{Z3} \cite{moura:2008} solves the constraints.
-    A component is given in the form of a specification with an input and output pair, which are written as logical formulae.
-    In other words, each component is defined as a specialized function.
-    Minimum program encoded by these functions has three attributes, which introduced by Jha et al.
-    \begin{enumerate}
-        \item is well-formed
-        \item uses all components without violating their respective specs
-        \item is consistent with the provided spec
-    \end{enumerate}
-    Using these characteristics, Jah et al. produced a complete SMT encoding for the whole program synthesis.
-
-  \section{Stochastic Search}
-    Stochastic search is another approach I discuss in this section.
-    Stochastic methods use the distribution over the space of programs in the hypothesis space that is conditioned on the specification to obtain a consistent program.
-    The learned distribution will lead to a better prediction rate of programs that correspond to the specification.
-
-    Figure \ref{stochastic} is an example of stochastic search.
-    Suppose each circle is a candidate of an AST node and each arrow points to the syntactic candidates of the next node with its percentage.
-    Stochastic search technique uses the probabilities to determine what code to synthesize.
-    The technique uses code base to predict the percentages.
-    \textit{STOKE} \cite{Schkufza:2016}, an implementation on program optimization uses stochastic search like this.
-
-    \begin{figure}[htbp]
-      \centering
-      \includegraphics[width=11cm]{images/stochastic.pdf}
-      \caption{An example of stochastic search}
-      \label{stochastic}
-    \end{figure}
-
-    The stochastic Syntax Guided Synthesis (SyGuS) solver uses the Metropolis-Hastings algorithm \cite{alur:2013}.
-    We can represent the space of all possible programs in the hypothesis space with a large dense graph.
-    Each node is a partial expression and an edge from node $n_1$ (= $e_1$) to node $n_2$ (= $e_2$) signifies that $e_2$ can be obtained from $e_1$.
-    Each edge has a probability that $e_1$ becomes $e_2$.
-    Metropolis-Hastings algorithm, in a nutshell, updates the probabilities and samples the desired program.
-
-    There are other methods based on probability, such as genetic programming, machine learning, and neural programming.
-    Although their solutions are not complete, they are highly efficient if you have quantitative objectives.
-
-  \section{Deduction-Based Programming}
-    Deduction-based programming is also called programming by examples (PBE).
-    This approach consists of intent specifications, program space, and search algorithms.
-    Given input/output examples, a synthesizer generates a candidate program \textbf{P}.
-    Using an SMT solver, we efficiently search for a program in the hypothesis space.
-    If the verifier finds a counter-example, sends the synthesizer feedback \textbf{F}.
-    Given a new input/output example, the synthesizer will produce another candidate until the \textbf{P} is verified.
-
-    This technology is also used in Excel, which is commonly used around the world.
-    The technology of transforming the text of an Excel cell is based on Gulwani's research called Flash Fill\cite{gulwani:2011}.
-    This research, which creates appropriate cells from input and output examples, connects the results of academia to make them available to end users, and won the Most Influential POPL Paper Award.
-    Polozov and Gulwani also presented FlashMeta\cite{polozov:2015}, a framework for PBE that can achieve Flash Fill-like results by simply defining DSLs.
-    This technology is expected to make PBE more widely used in the future.
-
-
-  % TODO: add \section{type-driven program synthesis}
 
 % my approach to the problem
 \chapter{Method}\label{chapter:method}
@@ -507,6 +440,79 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
   % TODO: make the contribution clear
   test insufficient => many variables -> exponential complexity
   % TODO: what to do
+
+\chapter{Related Work}\label{chapter:relatedWork}
+  The purpose of this chapter is to provide you with a brief overview of existing search techniques that seem to be relevant. As I said in the previous section, one of the factors that have improved the tractability of search space is new search techniques.
+  It is pertinent to note that even though I will describe some techniques as separate ones, they are all interconnected. A type of approach is used by another type of approach and vice versa. This categorization is just to clarify what aspects different algorithms have in common.
+
+  \section{Enumerative Search}
+  Enumeration is the most efficient way of searching since it overlooks nothing.
+  Nevertheless, it has a trade-off.
+  The search space is enormous.
+  In order to solve in realistic time, you need to prune some candidate programs.
+  Several pruning techniques have been developed.
+  The basic idea is to enumerate all trees and prune trees equivalent to those already explored.
+  I briefly introduce two of them, top-down tree search and bottom-up tree search.
+  Top-down tree search starts from the grammar of programming languages, which means that they search nonterminals in terminals.
+  On the other hand, bottom-up tree search starts from expressions.
+
+  \section{Constraint Solving}
+    Constraint solving is \textit{finding an instantiation of free variables in a formula}. This requires more rigorous specification than other techniques and syntactic program restrictions which are encoded so that you can find true models for a correct program.
+    I will give you some explanations about component-based synthesis proposed by Jha et al. \cite{jha:2010}.
+    This type of synthesis encodes the language and its spec into SAT/SMT constraints precisely.
+    An SMT solver like \textit{Z3} \cite{moura:2008} solves the constraints.
+    A component is given in the form of a specification with an input and output pair, which are written as logical formulae.
+    In other words, each component is defined as a specialized function.
+    Minimum program encoded by these functions has three attributes, which introduced by Jha et al.
+    \begin{enumerate}
+        \item is well-formed
+        \item uses all components without violating their respective specs
+        \item is consistent with the provided spec
+    \end{enumerate}
+    Using these characteristics, Jah et al. produced a complete SMT encoding for the whole program synthesis.
+
+  \section{Stochastic Search}
+    Stochastic search is another approach I discuss in this section.
+    Stochastic methods use the distribution over the space of programs in the hypothesis space that is conditioned on the specification to obtain a consistent program.
+    The learned distribution will lead to a better prediction rate of programs that correspond to the specification.
+
+    Figure \ref{stochastic} is an example of stochastic search.
+    Suppose each circle is a candidate of an AST node and each arrow points to the syntactic candidates of the next node with its percentage.
+    Stochastic search technique uses the probabilities to determine what code to synthesize.
+    The technique uses code base to predict the percentages.
+    \textit{STOKE} \cite{Schkufza:2016}, an implementation on program optimization uses stochastic search like this.
+
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics[width=11cm]{images/stochastic.pdf}
+      \caption{An example of stochastic search}
+      \label{stochastic}
+    \end{figure}
+
+    The stochastic Syntax Guided Synthesis (SyGuS) solver uses the Metropolis-Hastings algorithm \cite{alur:2013}.
+    We can represent the space of all possible programs in the hypothesis space with a large dense graph.
+    Each node is a partial expression and an edge from node $n_1$ (= $e_1$) to node $n_2$ (= $e_2$) signifies that $e_2$ can be obtained from $e_1$.
+    Each edge has a probability that $e_1$ becomes $e_2$.
+    Metropolis-Hastings algorithm, in a nutshell, updates the probabilities and samples the desired program.
+
+    There are other methods based on probability, such as genetic programming, machine learning, and neural programming.
+    Although their solutions are not complete, they are highly efficient if you have quantitative objectives.
+
+  \section{Deduction-Based Programming}
+    Deduction-based programming is also called programming by examples (PBE).
+    This approach consists of intent specifications, program space, and search algorithms.
+    Given input/output examples, a synthesizer generates a candidate program \textbf{P}.
+    Using an SMT solver, we efficiently search for a program in the hypothesis space.
+    If the verifier finds a counter-example, sends the synthesizer feedback \textbf{F}.
+    Given a new input/output example, the synthesizer will produce another candidate until the \textbf{P} is verified.
+
+    This technology is also used in Excel, which is commonly used around the world.
+    The technology of transforming the text of an Excel cell is based on Gulwani's research called Flash Fill\cite{gulwani:2011}.
+    This research, which creates appropriate cells from input and output examples, connects the results of academia to make them available to end users, and won the Most Influential POPL Paper Award.
+    Polozov and Gulwani also presented FlashMeta\cite{polozov:2015}, a framework for PBE that can achieve Flash Fill-like results by simply defining DSLs.
+    This technology is expected to make PBE more widely used in the future.
+
+  % TODO: add \section{type-driven program synthesis}
 
 % qualitative result and remaining problems/future work
 \chapter{Conclusion}\label{chapter:conclusion}
