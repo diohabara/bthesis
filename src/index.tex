@@ -241,14 +241,16 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 % my approach to the problem
 \chapter{Method}\label{chapter:method}
   In this chapter, I am going to introduce the internals of $\mathbf{Titan}$, which is a programming language and a tool for program synthesis.
+
   First, I will introduce its syntax, and next its semantics.
   After that, I will explain you how to synthesize Titan from its specifications.
   Rules in this chapter are inspired by a textbook \emph{"Types and Programming Languages"} \cite{pierce:2002} and a paper \emph{"RbSyn: Type- and Effect-Guided Program Synthesis"} \cite{guria:2021}.
-  \section{Syntax}
+  \section{Syntax}\label{section:syntax}
     Figure \ref{fig:syntax} shows the syntax of $\mathbf{Titan}$.
     $\mathbf{Titan}$'s components can be divided into values, expressions, unary operators, binary operators, types, effects, an type environment, an effect environment.
     $\mathtt{v}$ is values. It consists of boolean, integer, string, and unit, which is the same as nothing.
-    $\mathtt{e}$ is expressions. Every expression is evaluated to values. An expression can be a value, a variable, a unary operator and it operand, a binary operator and its operands, an expression application, an if expression, a let expression, a function expression, a type hole, an effect hole, a file-read, or a file-write.
+    $\mathtt{e}$ is expressions. Every expression is evaluated to values.
+    An expression can be a value, a variable, a unary operator and it operand, a binary operator and its operands, an expression application, an if expression, a let expression, a function expression, a type hole, an effect hole, a file-read, or a file-write.
     Unary Operators $\mathtt{uop}$ and binary operators $\mathtt{bop}$ works with operands as in other programming languages.
     $\mathtt{\tau}$ has 6 types. boolean, integer, string, unit(do nothing), any, and type-to-type.
     $\mathtt{\epsilon}$ has 7 effects. Effects related to I/O, a do-nothing effect, an \textit{any} effect, and an effect-to-effect effect.
@@ -300,19 +302,35 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 
   \section{Semantics}
     \subsection{Evaluation Rules}
-      % TODO: add explanation in the natural language
       Figure \ref{fig:evalRules} shows the evaluation rules of $\mathbf{Titan}$.
+
+      In the section \ref{section:syntax}, I introduced $\mathbf{Titan}$'s syntax.
+      I have not, however, tell you how to evaluate them.
+      In this subsection, I illustrate the rules with Figure \ref{fig:evalRules}.
+      Each rule is related to $\mathtt{e}$ and how to evaluate them to $\mathtt{v}$.
+      (\textrm{E-APP1}) and (\textrm{E-APP2}) are rules to evaluate an application expression.
+      (\textrm{E-IFTRUE}), (\textrm{E-IFFALSE}), and (\textrm{E-IF}) are rules for an if expression.
+      (\textrm{E-LET}) shows how to evaluate a let expression.
+      (\textrm{E-APPABS}) is the rule to evaluate a function expression.
+      In (\textrm{E-READ}), $\mathtt{fread}$ reads a file specified by $\mathtt{t}$ and evaluate to its content.
+      In (\textrm{E-WRITE}), $\mathtt{fwrite}$ writes $\mathtt{t}$ to the standard output.
+      (\textrm{E-HOLE}) shows that $\mathtt{hole}$ does nothing.
+
       \begin{figure}[htbp]
         \begin{flushleft}
           \textbf{Evaluation Rules} \quad \framebox{$\mathtt{t \to t'}$}
         \end{flushleft}
         \centering
         \begin{mathpar}
-          % let
+          % app
           \dfrac
             {\mathtt{t_1 \longrightarrow t_1'}}
-            {\mathtt{let\ x=t_1\ in\ t_2 \longrightarrow let\ x=t_1'\ in\ t_2}}
-            \left(\textrm{E-LET}\right) \and
+            {\mathtt{t_1\ t_2 \longrightarrow t_1'\ t_2}}
+            \left(\textrm{E-APP1}\right) \and
+          \dfrac
+            {\mathtt{t_2 \longrightarrow t_2'}}
+            {\mathtt{t_1\ t_2 \longrightarrow t_1\ t_2'}}
+            \left(\textrm{E-APP2}\right) \and
           % if
           \dfrac
             {}
@@ -326,15 +344,12 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
             {\mathtt{t_1 \longrightarrow t_1'}}
             {\mathtt{if\ t_1\ then\ t_2\ else\ t_3 \longrightarrow if\ t_1'\ then\ t_2\ else\ t_3}}
             \left(\textrm{E-IF}\right) \and
-          % fun
+          % let
           \dfrac
             {\mathtt{t_1 \longrightarrow t_1'}}
-            {\mathtt{t_1\ t_2 \longrightarrow t_1'\ t_2}}
-            \left(\textrm{E-APP1}\right) \and
-          \dfrac
-            {\mathtt{t_2 \longrightarrow t_2'}}
-            {\mathtt{t_1\ t_2 \longrightarrow t_1\ t_2'}}
-            \left(\textrm{E-APP2}\right) \and
+            {\mathtt{let\ x=t_1\ in\ t_2 \longrightarrow let\ x=t_1'\ in\ t_2}}
+            \left(\textrm{E-LET}\right)\label{ELET} \and
+          % fun
           \dfrac
             {}
             {\mathtt{(fun\ x \to t_{12}) v_2 \longrightarrow [x \mapsto v_2]t_{12}}}
@@ -372,6 +387,11 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
             {\mathtt{x : \tau, \epsilon \in \Gamma, E}}
             {\mathtt{\Gamma, E \vdash x : \tau, \epsilon}}
             \left(\textrm{T-VAR}\right) \and
+          % app
+          \dfrac
+            {\mathtt{\Gamma, E \vdash t_1 : \tau_{11}, \epsilon_{11} \to \tau_{12}, \epsilon_{12} \quad \Gamma, E \vdash t_2 : \tau_{11}, \epsilon_{11}}}
+            {\mathtt{\Gamma, E \vdash t_1\ t_2 : \tau_{12}, \epsilon_{12}}}
+            \left(\textrm{T-APP}\right) \and
           % let
           \dfrac
             {\mathtt{\Gamma, E\ \vdash\ t_1 : \tau_1, \epsilon_1 \quad \Gamma, E \vdash x : \tau_1\ \vdash\ t_2 : \tau_2, \epsilon_2}}
@@ -395,10 +415,6 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
             {\mathtt{\Gamma, x : \tau_1, E, x : \epsilon_1 \vdash t_2 : \tau_2, \epsilon_2}}
             {\mathtt{\Gamma \vdash fun\ (x : \tau_1, \epsilon_1 \to t_2) : \tau_1, \epsilon_1 \to \tau_2, \epsilon_2}}
             \left(\textrm{T-ABS}\right) \and
-          \dfrac
-            {\mathtt{\Gamma, E \vdash t_1 : \tau_{11}, \epsilon_{11} \to \tau_{12}, \epsilon_{12} \quad \Gamma, E \vdash t_2 : \tau_{11}, \epsilon_{11}}}
-            {\mathtt{\Gamma, E \vdash t_1\ t_2 : \tau_{12}, \epsilon_{12}}}
-            \left(\textrm{T-APP}\right) \and
           % I/O
           \dfrac
             {\mathtt{\Gamma \vdash t_1 : \tau_{string}}}
