@@ -1,7 +1,6 @@
 \newif\ifcommentenabled \commentenabledtrue
 \newcommand{\TS}[1]{\ifcommentenabled\textcolor{red}{TS: #1}\fi}
 \newcommand{\TK}[1]{\ifcommentenabled\textcolor{blue}{TK: #1}\fi}
-% TODO: How can I write E-LET like those rules in TaPL?
 
 \documentclass[12pt, a4paper, titlepage]{report}
 \usepackage[cache=false]{minted} % highlight programming languages
@@ -41,7 +40,7 @@
 \begin{document}
 
 % front page
-% \includepdf[pages={-}]{images/sotsuronFront.pdf}
+\includepdf[pages={-}]{images/sotsuronFront.pdf}
 
 % header
 \maketitle
