@@ -227,7 +227,12 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     Using an SMT solver, we efficiently search for a program in the hypothesis space.
     If the verifier finds a counter-example, sends the synthesizer feedback \textbf{F}.
     Given a new input/output example, the synthesizer will produce another candidate until the \textbf{P} is verified.
-    % TODO: add examples such as FlashFill
+
+    This technology is also used in Excel, which is commonly used around the world.
+    The technology of transforming the text of an Excel cell is based on Gulwani's research called Flash Fill\cite{gulwani:2011}.
+    This research, which creates appropriate cells from input and output examples, connects the results of academia to make them available to end users, and won the Most Influential POPL Paper Award.
+    Polozov and Gulwani also presented FlashMeta\cite{polozov:2015}, a framework for PBE that can achieve Flash Fill-like results by simply defining DSLs.
+    This technology is expected to make PBE more widely used in the future.
 
 
   % TODO: add \section{type-driven program synthesis}
@@ -347,7 +352,6 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 
     \subsection{Type/Effect System}
       % TODO: add explanation in the natural language
-      % TODO: say that I refrained from mentioning anything about primitive calculations.
       Figure \ref{fig:typeEffectSystem} shows the type/effect system of $\mathbf{Titan}$.
       \begin{figure}[htbp]
         \begin{flushleft}
