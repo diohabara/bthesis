@@ -1,5 +1,7 @@
 # Bachelor Thesis
 
+- [Presentation](https://docs.google.com/presentation/d/1OtlAz22BQaNUWC0A5MbLpZ4gZqEj-UjzBgQu-w4Pb0s/edit?usp=sharing)
+
 ## dependencies
 
 - [`nix`](https://nixos.org/download.html#download-nix)
