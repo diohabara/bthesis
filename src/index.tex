@@ -41,7 +41,7 @@
 \begin{document}
 
 % front page
-\includepdf[pages={-}]{images/sotsuronFront.pdf}
+% \includepdf[pages={-}]{images/sotsuronFront.pdf}
 
 % header
 \maketitle
@@ -475,7 +475,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
           \left(\textrm{S-STRINGHOLE}\right) \and
         % I/O
         \dfrac
-          {\mathtt{\Gamma \vdash t : \tau_{int} \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
+          {\mathtt{\Gamma \vdash t : \tau_{string} \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
           {\mathtt{t\ hole \longrightarrow fwrite(t)}}
           \left(\textrm{S-READ}\right) \and
         \dfrac
@@ -496,14 +496,17 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     \end{figure}
 
 % my approach to the problem
-\chapter{Experiment}\label{chapter:experiment}
+\chapter{Evaluation}\label{chapter:experiment}
+  \section{Experiment}
   % TODO: situation
-    \begin{minted}[breaklines, linenos]{ocaml}
-      let _ = print_endline "hello world"
-    \end{minted}
-  \section{Result}
   % TODO: code generation examples
+  % \begin{minted}[breaklines, linenos]{ocaml}
+  %     let _ = print_endline "hello world"
+  %   \end{minted}
+  good/bad
   \section{Consideration}
+  % TODO: make the contribution clear
+  test insufficient => many variables -> exponential complexity
   % TODO: what to do
 
 % qualitative result and remaining problems/future work
