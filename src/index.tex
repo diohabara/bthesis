@@ -446,8 +446,12 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
       \end{figure}
 
   \section{Synthesis Process}\label{section:synthesisProcess}
-    % TODO: add explanation in the natural language
     Figure \ref{fig:synthesisRules} shows the synthesis rules of $\mathbf{Titan}$.
+
+    The actual procedure for synthesis is very simple.
+    Find the part about the hole in the program.
+    Look at the type and effect of the hole, and determine what kind of value or function expression should be placed in it.
+    After that, synthesize the program with the values and expressions so that it passes the unit test.
     \begin{figure}[htbp]
       \begin{flushleft}
         \textbf{Synthesis Rules} \quad \framebox{$\mathtt{\Gamma, E \vdash t :\tau, \epsilon}$}
