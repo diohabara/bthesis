@@ -1,7 +1,7 @@
 # Bachelor Thesis
 
 - Title: **Type- and Sequential Effect-Guided Programming by Example**
-- [Presentation](https://docs.google.com/presentation/d/1OtlAz22BQaNUWC0A5MbLpZ4gZqEj-UjzBgQu-w4Pb0s/edit?usp=sharing)
+- [Presentation](https://docs.google.com/presentation/d/18Vvwpqxx6bL5E6WMobP0aK3T8CKttAG2AvUNmv_Ez4o/edit?usp=sharing)
 
 ## dependencies
 
