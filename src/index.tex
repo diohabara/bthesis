@@ -374,8 +374,15 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
       \end{figure}
 
     \subsection{Type/Effect System}
-      % TODO: add explanation in the natural language
       Figure \ref{fig:typeEffectSystem} shows the type/effect system of $\mathbf{Titan}$.
+
+      According to "Types and Programming Languages" \cite{pierce:2002} type system is something that protect unintentional programs.
+      $\mathbf{Titan}$'s type system uses type system to detect errors and synthesize values.
+
+      Effect system describes computational effects such as side effects.
+      For example, it can describe reading/writing to a variable, file I/O, etc.
+      In $\mathbf{Titan}$, effect is used to compose functions related to file I/O.
+
       \begin{figure}[htbp]
         \begin{flushleft}
           \textbf{Type/Effect System} \quad \framebox{$\mathtt{\Gamma, E} \vdash \mathtt{t : \tau, \epsilon}$}
@@ -498,7 +505,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 % qualitative result and remaining problems/future work
 \chapter{Conclusion}\label{chapter:conclusion}
 % TODO: summary of my work
-% TODO: qualitative result
+% TODO: qualitative/quantitative result
 % TODO: remaining problems/future work
 
 \bibliographystyle{unsrt}
