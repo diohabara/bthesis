@@ -57,6 +57,7 @@ I also show my gratitude to my good friends,
   \href{https://twitter.com/9SKEgI72RcOWxB8}{haru},
   \href{https://twitter.com/LdCqh1}{Mao Kaneyasu},
   \href{https://twitter.com/NaomiatLibrary}{Naomi},
+  \href{https://twitter.com/TaKOBKi}{TaKO8Ki},
   \href{https://twitter.com/Tmstmput}{Tsumiki},
   \href{https://twitter.com/akio_utsuroido}{Akio},
   \href{https://twitter.com/gasukkkgesu}{Gasu},
@@ -244,8 +245,15 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
   After that, I will explain you how to synthesize Titan from its specifications.
   Rules in this chapter are inspired by a textbook \emph{"Types and Programming Languages"} \cite{pierce:2002} and a paper \emph{"RbSyn: Type- and Effect-Guided Program Synthesis"} \cite{guria:2021}.
   \section{Syntax}
-    % TODO: add explanation in the natural language
     Figure \ref{fig:syntax} shows the syntax of $\mathbf{Titan}$.
+    $\mathbf{Titan}$'s components can be divided into values, expressions, unary operators, binary operators, types, effects, an type environment, an effect environment.
+    $\mathtt{v}$ is values. It consists of boolean, integer, string, and unit, which is the same as nothing.
+    $\mathtt{e}$ is expressions. Every expression is evaluated to values. An expression can be a value, a variable, a unary operator and it operand, a binary operator and its operands, an expression application, an if expression, a let expression, a function expression, a type hole, an effect hole, a file-read, or a file-write.
+    Unary Operators $\mathtt{uop}$ and binary operators $\mathtt{bop}$ works with operands as in other programming languages.
+    $\mathtt{\tau}$ has 6 types. boolean, integer, string, unit(do nothing), any, and type-to-type.
+    $\mathtt{\epsilon}$ has 7 effects. Effects related to I/O, a do-nothing effect, an \textit{any} effect, and an effect-to-effect effect.
+    $\mathtt{\Gamma}$ and $\mathtt{E}$ links identifiers to its type or effect.
+
     \begin{figure}[htbp]
       \begin{flushleft}
         \textbf{Syntax}
