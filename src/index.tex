@@ -481,7 +481,8 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
   The following is a list of points that were not covered in this study.
   The difference from simple search is small due to the simplicity of the language that can be generated, and there are few quantitative results.
   The simplicity of the language that can be generated is evident from the fact that there are only five types except for the function type.
-  It also has less syntax.
+  It also has a few syntax.
+  In the future, I would like to see if program synthesis can be performed in the same way for languages with more complex types and syntax.
   Since it is a simple language, the search space is small, and it is possible that it is faster to let the synthesizer search than it is to describe the types and effects.
   Secondly, the lack of quantitative results is a deficiency of the study.
   In the section \ref{section:experiment}, we have considered the rough speed by analyzing the amount of computation, but in practice, it is desirable to consider using quantitative data.
@@ -562,9 +563,12 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 
 % qualitative result and remaining problems/future work
 \chapter{Conclusion}\label{chapter:conclusion}
-% TODO: summary of my work
-% TODO: qualitative/quantitative result
-% TODO: remaining problems/future work
+Using types and effects, we defined a language for synthesizing programs from unit tests and a system for generating them.
+
+As a qualitative result, it was shown that it is possible to synthesize programs under certain rules.
+However, there is no quantitative result, and it is necessary to measure it.
+
+As mentioned above, the remaining task is to measure the quantitative results. Also, since the language specification is simple, it is necessary to conduct similar research in a more complex language that can be used in the real world.
 
 \bibliographystyle{unsrt}
 \bibliography{
