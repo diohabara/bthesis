@@ -407,20 +407,20 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
           \left(\textrm{S-STRINGHOLE}\right) \and
         % I/O
         \dfrac
-          {\mathtt{\Gamma \vdash t : \tau_{string} \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
-          {\mathtt{t\ hole \longrightarrow fwrite(t)}}
+          {\mathtt{\Gamma \vdash t : \tau_{string} \quad E \vdash hole : \epsilon_{open} \to \epsilon_{read} \to \epsilon_{close}}}
+          {\mathtt{t \dots hole \longrightarrow fread(t)}}
           \left(\textrm{S-READ}\right) \and
         \dfrac
           {\mathtt{\Gamma \vdash t : \tau_{bool} \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
-          {\mathtt{t\ hole \longrightarrow fwrite(t)}}
+          {\mathtt{t \dots hole \longrightarrow fwrite(t)}}
           \left(\textrm{S-BOOLWRITE}\right) \and
         \dfrac
           {\mathtt{\Gamma \vdash t : \tau_{int} \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
-          {\mathtt{t\ hole \longrightarrow fwrite(t)}}
+          {\mathtt{t \dots hole \longrightarrow fwrite(t)}}
           \left(\textrm{S-INTWRITE}\right) \and
         \dfrac
           {\mathtt{\Gamma \vdash t : \tau_{string} \quad E \vdash hole : \epsilon_{open} \to \epsilon_{write} \to \epsilon_{close}}}
-          {\mathtt{t\ hole \longrightarrow fwrite(t)}}
+          {\mathtt{t \dots hole \longrightarrow fwrite(t)}}
           \left(\textrm{S-STRINGWRITE}\right) \and
       \end{mathpar}
       \caption{Synthesis Rules of $\mathbf{Titan}$}
@@ -430,15 +430,48 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 % my approach to the problem
 \chapter{Evaluation}\label{chapter:experiment}
   \section{Experiment}
-  % TODO: situation
-  % TODO: code generation examples
-  % \begin{minted}[breaklines, linenos]{ocaml}
-  %     let _ = print_endline "hello world"
-  %   \end{minted}
-  good/bad
+  Code generation is done based on unit tests and the main body of the program.
+
+  I will present a simple code generation program using type.
+  The following code is a program in which the variable a is set to 1.
+  First, the condition for variable a is defined, and then the program is generated under that condition.
+  \begin{minted}[breaklines, linenos]{ocaml}
+      (* [unit_test] defines [a] should be 1. *)
+      unit_test a 1
+      ;;
+      (* [synthesize] fill [hole] to meet the unit_test requirement. *)
+      synthesize {|
+        let a = hole: int;;
+        (* => let a = 1;; *)
+      |}
+      ;;
+    \end{minted}
+
+  Next, I will present a simple code generation program using type.
+  The first thing this program does is to unit test that the output is "hello world".
+  As the argument of the synthesizing function, a whole with the effects of open, write, and close is passed, and the contents are filled in to satisfy the conditions of the unit test.
+  \begin{minted}[breaklines, linenos]{ocaml}
+    (* [unit_test] defines [standard output] should be "hello world". *)
+    unit_test stdout "hello world"
+    ;;
+    (* [synthesize] fill [hole] to meet the unit_test requirement. *)
+    synthesize {|
+      let a = "hello world" in
+      hole: {open write close};;
+      (* => fwrite(a);; *)
+    |}
+    ;;
+  \end{minted}
+
+  Next is an example of a problem.
+  A simple example like the one presented above can generate code in a short time, but as the number of variables that appear increases, the computation time should increase exponentially accordingly.
+  This is because if there are $K$ candidates for each variable, and if $N$ variables appear, the time complexity will be $O(K^N)$.
+
   \section{Consideration}
+  The contributions of this research and what needs to be done in the future are reviewed here.
   % TODO: make the contribution clear
-  test insufficient => many variables -> exponential complexity
+
+
   % TODO: what to do
 
 \chapter{Related Work}\label{chapter:relatedWork}
