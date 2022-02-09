@@ -429,7 +429,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 
 % my approach to the problem
 \chapter{Evaluation}\label{chapter:experiment}
-  \section{Experiment}
+  \section{Experiment}\label{section:experiment}
   Code generation is done based on unit tests and the main body of the program.
 
   I will present a simple code generation program using type.
@@ -469,10 +469,23 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 
   \section{Consideration}
   The contributions of this research and what needs to be done in the future are reviewed here.
-  % TODO: make the contribution clear
 
+  In this study, we found that effects can be used effectively for program synthesis.
+  If effect does not exist, we have to write $\mathtt{hole : \tau_{unit}}$ to write to standard output.
+  However, in that case, the search space expands exponentially, and therefore, the search cannot be efficient in time.
+  In addition, a development method called test-driven development has been gaining popularity in recent years.
+  It is a method of writing tests first, and then writing code to make the tests work.
+  This method and the one I propose will fit well together.
+  If this research continues to develop, it will contribute to the real world industry.
 
-  % TODO: what to do
+  The following is a list of points that were not covered in this study.
+  The difference from simple search is small due to the simplicity of the language that can be generated, and there are few quantitative results.
+  The simplicity of the language that can be generated is evident from the fact that there are only five types except for the function type.
+  It also has less syntax.
+  Since it is a simple language, the search space is small, and it is possible that it is faster to let the synthesizer search than it is to describe the types and effects.
+  Secondly, the lack of quantitative results is a deficiency of the study.
+  In the section \ref{section:experiment}, we have considered the rough speed by analyzing the amount of computation, but in practice, it is desirable to consider using quantitative data.
+  This will be an issue to be addressed in future research.
 
 \chapter{Related Work}\label{chapter:relatedWork}
   The purpose of this chapter is to provide you with a brief overview of existing search techniques that seem to be relevant. As I said in the previous section, one of the factors that have improved the tractability of search space is new search techniques.
