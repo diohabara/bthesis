@@ -545,7 +545,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     There are other methods based on probability, such as genetic programming, machine learning, and neural programming.
     Although their solutions are not complete, they are highly efficient if you have quantitative objectives.
 
-  \section{Deduction-Based Programming}
+  \section{Deduction-based Programming}
     Deduction-based programming is also called programming by examples (PBE).
     This approach consists of intent specifications, program space, and search algorithms.
     Given input/output examples, a synthesizer generates a candidate program \textbf{P}.
@@ -559,7 +559,11 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     Polozov and Gulwani also presented FlashMeta\cite{polozov:2015}, a framework for PBE that can achieve Flash Fill-like results by simply defining DSLs.
     This technology is expected to make PBE more widely used in the future.
 
-  % TODO: add \section{type-driven program synthesis}
+  \section{Type-driven Program Synthesis}
+    Similar to my research, there is research on generating programs using types.
+    Osera's "Type-and-Example-Directed Program Synthesis"\cite{osera:2015} is a good example.
+    It is a study of generating recursive functions that process algebraic data types.
+    It uses types and input/output examples to remove the search space.
 
 % qualitative result and remaining problems/future work
 \chapter{Conclusion}\label{chapter:conclusion}
