@@ -3,7 +3,7 @@
 \newcommand{\TK}[1]{\ifcommentenabled\textcolor{blue}{TK: #1}\fi}
 
 \documentclass[12pt, a4paper, titlepage]{report}
-\usepackage{minted} % highlight programming languages
+\usepackage[cache=false]{minted} % highlight programming languages
 \usepackage[dvipdfmx]{graphicx}
 \usepackage[nottoc,numbib]{tocbibind}
 \usepackage[utf8]{inputenc}
@@ -578,7 +578,7 @@ As mentioned above, the remaining task is to measure the quantitative results. A
 \bibliographystyle{unsrt}
 \bibliography{
   bib/papers,
-  bib/textbooks,
+  bib/textbooks
 }
 
 \end{document}
