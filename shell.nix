@@ -3,6 +3,6 @@ mkShell {
   buildInputs = [
     tectonic
     inkscape
-    texlive.combined.scheme-full
+    texlive.combined.scheme-minimal
   ];
 }

@@ -81,7 +81,7 @@ difficult for programmers who are not skilled in math while its strictness contr
 With natural language, computers may not be able to understand the meaning, and the intention may not be conveyed correctly even though programmers can find it easy to write specifications.
 This paper examines the use of a type and effect system as a specification that is easy to understand by both humans and computers alike. The types are properties of data and can be used to describe the input and output of a function. The effects, which can explain the internal processes of a function, represent a transition in a state, such as the value of a variable, shared memory between threads, and I/O operations.
 Types are familiar to programmers who use statically typed languages.
-Many users are unfamiliar with effects, but the effects can describe the internal behavior of programs and are easy to understand if designed properly.
+Users may not be familiar with effects, but the effects can describe the internal behavior of programs and are easy to understand if designed properly.
 By utilizing types and effects, I formalize an efficient way to explore candidate code.
 Types were useful to synthesize values and effects were usable to synthesize function expressions.
 I will demonstrate some specifications and an example of a program that has been generated based on these specifications.
@@ -92,7 +92,7 @@ After the demonstration, I give some considerations to the current problems the 
 In Chapter \ref{chapter:introduction}, I discuss the motivation for this research, what program synthesis is, and existing methods  The details of the existing methods can be discussed in the related work chapter, which should be  put before the conclusion.
 I give examples of existing researches in Chapter \ref{chapter:relatedWork}.
 I explain my proposed method in Chapter \ref{chapter:method}.
-I present in Chapter \ref{chapter:experiment} the results obtained by the proposed method and evaluate them.
+I present in Chapter \ref{chapter:example} the results obtained by the proposed method and evaluate them.
 Chapter \ref{chapter:conclusion} concludes with a summary of the results and evaluation, as well as future issues.
 
 \chapter{Introduction}\label{chapter:introduction}
@@ -122,7 +122,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     My goal is to help people develop reliable software easily through the type theory and the program synthesis.
     An additional point that I would like to incorporate into my research is the effect system, which is an informative and descriptive system for programming languages.
     This system allows us to describe the internals of a function, which results in high-quality code generation.
-    Namely, we can use the system to generate more secure and intended code than code without it.
+    Namely, I can use the system to generate more secure and intended code than code without it.
     Although this concept is unfamiliar to many programmers, the one in this paper is easily understandable and its popularity is not a big obstacle.
 
   \section{Program Synthesis}
@@ -385,6 +385,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     Find the part about the hole in the program.
     Look at the type and effect of the hole, and determine what kind of value or function expression should be placed in it.
     After that, synthesize the program with the values and expressions so that it passes the unit test.
+    % search space
     \begin{figure}[htbp]
       \begin{flushleft}
         \textbf{Synthesis Rules} \quad \framebox{$\mathtt{\Gamma, E \vdash t :\tau, \epsilon}$}
@@ -429,8 +430,9 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     \end{figure}
 
 % my approach to the problem
-\chapter{Evaluation}\label{chapter:experiment}
-  \section{Experiment}\label{section:experiment}
+\chapter{Evaluation}\label{chapter:example}
+  \section{Example}\label{section:example}
+  \subsection{Simple Example}\label{subsection:simple_example}
   Code generation is done based on unit tests and the main body of the program.
 
   I will present a simple code generation program using type.
@@ -448,7 +450,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
       ;;
     \end{minted}
 
-  Next, I will present a simple code generation program using type.
+  Next, I will present a simple code generation program using effect.
   The first thing this program does is to unit test that the output is "hello world".
   As the argument of the synthesizing function, a whole with the effects of open, write, and close is passed, and the contents are filled in to satisfy the conditions of the unit test.
   \begin{minted}[breaklines, linenos]{ocaml}
@@ -464,15 +466,48 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     ;;
   \end{minted}
 
-  Next is an example of a problem.
-  A simple example like the one presented above can generate code in a short time, but as the number of variables that appear increases, the computation time should increase exponentially accordingly.
+  \subsection{Complex Example}\label{subsection:complex_example}
+
+  Here is a complex example.
+  $...$ means an omitted part of the program.
+
+  In this example, unit tests define a lot of requirements.
+  There are a lot of holes to fill too.
+  Thus, this example has a lot of constraints to solve.
+  With ordinary machine, if $n$ is big, it cannot solve this problem in a sensible time.
+
+  \begin{minted}[breaklines, linenos]{ocaml}
+    (* [unit_test]s define some requirements. *)
+    unit_test (a_0 + a_1) 2022
+    unit_test (a_1 * a_2) 20
+    ...
+    unit_test (a_3 / a_n) 10
+    unit_test stdout 30
+    ;;
+    (* [synthesize] tries to fill [hole] to meet the unit_tests' requirements. *)
+    synthesize {|
+      let a_0 = hole: int in
+      let a_1 = hole: int in
+      ...
+      let a_n = hole: int in
+      hole: {open write close};;
+      (* => takes HUGE time!!! *)
+    |}
+    ;;
+  \end{minted}
+
+  \subsection{Problems of Examples}
+  Next are problems of examples.
+
+  Simple examples like the ones presented in the subsection \ref{subsection:simple_example} can generate code in a short time, but as the number of variables that appear increases, the computation time should increase exponentially accordingly.
+  The one in the subsection \ref{subsection:complex_example} is the typical case.
   This is because if there are $K$ candidates for each variable, and if $N$ variables appear, the time complexity will be $O(K^N)$.
 
   \section{Consideration}
   The contributions of this research and what needs to be done in the future are reviewed here.
 
-  In this study, we found that effects can be used effectively for program synthesis.
-  If effect does not exist, we have to write $\mathtt{hole : \tau_{unit}}$ to write to standard output.
+  In this study, I found that effects can be used effectively for program synthesis.
+  If effect does not exist, I have to write $\mathtt{hole : \tau_{unit}}$ to write to standard output.
   However, in that case, the search space expands exponentially, and therefore, the search cannot be efficient in time.
   In addition, a development method called test-driven development has been gaining popularity in recent years.
   It is a method of writing tests first, and then writing code to make the tests work.
@@ -486,7 +521,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
   In the future, I would like to see if program synthesis can be performed in the same way for languages with more complex types and syntax.
   Since it is a simple language, the search space is small, and it is possible that it is faster to let the synthesizer search than it is to describe the types and effects.
   Secondly, the lack of quantitative results is a deficiency of the study.
-  In the section \ref{section:experiment}, we have considered the rough speed by analyzing the amount of computation, but in practice, it is desirable to consider using quantitative data.
+  In the section \ref{section:example}, I have considered the rough speed by analyzing the amount of computation, but in practice, it is desirable to consider using quantitative data.
   This will be an issue to be addressed in future research.
 
 \chapter{Related Work}\label{chapter:relatedWork}
@@ -550,7 +585,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     Deduction-based programming is also called programming by examples (PBE).
     This approach consists of intent specifications, program space, and search algorithms.
     Given input/output examples, a synthesizer generates a candidate program \textbf{P}.
-    Using an SMT solver, we efficiently search for a program in the hypothesis space.
+    Using an SMT solver, I efficiently search for a program in the hypothesis space.
     If the verifier finds a counter-example, sends the synthesizer feedback \textbf{F}.
     Given a new input/output example, the synthesizer will produce another candidate until the \textbf{P} is verified.
 
@@ -568,7 +603,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 
 % qualitative result and remaining problems/future work
 \chapter{Conclusion}\label{chapter:conclusion}
-Using types and effects, we defined a language for synthesizing programs from unit tests and a system for generating them.
+Using types and effects, I defined a language for synthesizing programs from unit tests and a system for generating them.
 
 As a qualitative result, it was shown that it is possible to synthesize programs under certain rules.
 However, there is no quantitative result, and it is necessary to measure it.
