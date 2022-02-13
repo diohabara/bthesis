@@ -50,7 +50,7 @@
 \newpage
 
 \chapter*{Acknowledgment}
-This research was supervised by Prof. Fujita at the University of Tokyo and supported by Assistant Prof. Sekiyama at National Institute of Technology.
+This research was supervised by Prof. Fujita at the University of Tokyo and supported by Assistant Prof. Sekiyama at the National Institute of Technology.
 
 I thank my colleagues at the University of Tokyo, Miyasaka-san, Koike-san, Yu-san, Nagasawa-san, and Yi-san.
 
@@ -83,39 +83,39 @@ This paper examines the use of a type and effect system as a specification that 
 Types are familiar to programmers who use statically typed languages.
 Users may not be familiar with effects, but the effects can describe the internal behavior of programs and are easy to understand if designed properly.
 By utilizing types and effects, I formalize an efficient way to explore candidate code.
-Types were useful to synthesize values and effects were usable to synthesize function expressions.
+Types were useful to synthesize values and effects can be used to synthesize function expressions.
 I will demonstrate some specifications and an example of a program that has been generated based on these specifications.
 After the demonstration, I give some considerations to the current problems the synthesizer has and how to improve the synthesizer.
 % \TS{(DONE)How do you synthesize programs with types and effects?  What experiments are (planed to be) conducted?  How about results?}
 % \TK{describe how to synthesize and what to do.}
 
-In Chapter \ref{chapter:introduction}, I discuss the motivation for this research, what program synthesis is, and existing methods  The details of the existing methods can be discussed in the related work chapter, which should be  put before the conclusion.
-I give examples of existing researches in Chapter \ref{chapter:relatedWork}.
-I explain my proposed method in Chapter \ref{chapter:method}.
-I present in Chapter \ref{chapter:example} the results obtained by the proposed method and evaluate them.
-Chapter \ref{chapter:conclusion} concludes with a summary of the results and evaluation, as well as future issues.
+In Chapter\ref{chapter:introduction}, I discuss the motivation for this research, what program synthesis is, and existing methods  The details of the existing methods can be discussed in the related work chapter, which should be  put before the conclusion.
+I give examples of existing research in Chapter\ref{chapter:relatedWork}.
+I explain my proposed method in Chapter\ref{chapter:method}.
+I present in Chapter \ref{chapter:example}the results obtained by the proposed method and evaluate them.
+The chapref{chapterconclusion} concludes with a summary of the results and evaluation, as well as future issues.
 
 \chapter{Introduction}\label{chapter:introduction}
 % \TS{Introduction should include a summary of what this thesis achieves.  The details of the existing methods can be discussed in the related work section, which should be  put before the conclusion.}
 % \TK{move "Related Work"(previous "Existing methods") to after this chapter and add section "Achievement" in this chapter}
   \section{Motivation}
-    The purpose of this research is to contribute to programming efficiently and safely in the current software-centric world that demands for many lines of secure code.
+    The purpose of this research is to contribute to programming efficiently and safely in the current software-centric world that demands many lines of secure code.
     I tackle this problem by using a type-effect system and a technique of program synthesis.
     Bodik insists that this issue is tractable from non-programmers' and programmers' perspectives \cite{bodik:2015}.
-    I, however, focus only on a programmer point of view.
+    I, however, focus only on a programmer's point of view.
 
     % present situation(type is used in everyday development, generating code is required)
     Today, more and more people are developing software.
     Thus, it can be said that an increasing number of people are writing programming languages proportionally.
     Tools to assist programmers are appearing more and more.
     For example, GitHub Copilot based on the research by Chen et al. \cite{Chen:2021} completes source code from function names and comments.
-    It is obvious that it uses program synthesis techniques.
+    It uses program synthesis techniques.
     DeepMind has also recently developed AlphaCode \cite{Li:2022}, an AI that can automatically solve competitive programming problems.
     As a result of the current situation, the demand for secure code is also increasing.
-    Recent software development is facilitated by programming languages that are based on type systems, such as Rust, TypeScript and Scala.
+    Recent software development is facilitated by programming languages that are based on type systems, such as Rust, TypeScript, and Scala.
     This shows that the type theory is not only an interesting but also a practical research topic, and modern programmers are familiar with the notion.
     Additionally, the increasing demand illustrates the need for more time-efficient and productive programming.
-    The program synthesis fits for this requirement because it is a research topic to deal with easy code generation.
+    The program synthesis fits this requirement because it is a research topic to deal with easy code generation.
 
     % what to do(type is usable to boost efficient programming)
     I am motivated by these trends in my research.
@@ -152,41 +152,41 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
       \item Search Technique
     \end{enumerate}
     Synthesizers can accept a variety of inputs.
-    Natural languages, logical formulae, and incomplete program code are acceptable forms of communication.
-    In relation to the speed and accuracy of program synthesis, search space is a consequential aspect.
+    Natural languages, logical formulae, and incomplete program codes are acceptable forms of communication.
+    Concerning the speed and accuracy of program synthesis, search space is a consequential aspect.
     When the target language is a simple language such as brainfuck, which is created by Urban Müller \cite{easter:2020}, the complexity will differ from when the target language is a fully functional language such as C++.
-    I have contributed to the field of search technique in this paper.
+    I have contributed to the field of search techniques in this paper.
     The technique is an essential component of the program synthesis process.
-    An algorithm determines how fast and how accurately a synthesizer will produce code, and it inseparable from the two factors, user input and search space.
+    An algorithm determines how fast and how accurately a synthesizer will produce code, and the procedure is inseparable from the two factors, user input, and search space.
 
-    I am going to deal with these questions in section \ref{section:synthesisProcess}, in which I cover how to synthesize a program.
+    I am going to deal with these questions in the section\ref{section:synthesisProcess}, in which I cover how to synthesize a program.
 
   \section{Achievement} % contribution of this paper and intro to technical part
   In this research, I have formulated a type and effect system to efficiently synthesize programs by examples.
   By using types and effects, you can synthesize code that would be impossible to synthesize without the use of types and effects due to the explosion of time complexity.
 
-  I defined my own programming language syntax.
+  I defined my programming language syntax.
   I then defined how that programming language would be evaluated.
   I defined the type and effect system that the programming language should follow to ensure its type safety.
-  If a language is mathematically guaranteed to be safe on its runtime, it can be used for large scale software development.
+  If a language is mathematically guaranteed to be safe on its runtime, it can be used for large-scale software development.
   I have formulated a system for program synthesis targeting this language, using parts of it as specifications.
 
 % my approach to the problem
 \chapter{Method}\label{chapter:method}
   In this chapter, I am going to introduce the internals of $\mathbf{Titan}$, which is a programming language and a tool for program synthesis.
 
-  First, I will introduce its syntax, and next its semantics.
-  After that, I will explain you how to synthesize Titan from its specifications.
+  First, I will introduce its syntax and next its semantics.
+  After that, I will explain to you how to synthesize Titan from its specifications.
   Rules in this chapter are inspired by a textbook \emph{"Types and Programming Languages"} \cite{pierce:2002} and a paper \emph{"RbSyn: Type- and Effect-Guided Program Synthesis"} \cite{guria:2021}.
   \section{Syntax}\label{section:syntax}
-    Figure \ref{fig:syntax} shows the syntax of $\mathbf{Titan}$.
-    $\mathbf{Titan}$'s components can be divided into values, expressions, unary operators, binary operators, types, effects, an type environment, an effect environment.
-    $\mathtt{v}$ is values. It consists of boolean, integer, string, and unit, which is the same as nothing.
+    The figure \ref{fig:syntax}shows the syntax of $\mathbf{Titan}$.
+    $\mathbf{Titan}$'s components can be divided into values, expressions, unary operators, binary operators, types, effects, a type environment, an effect environment.
+    $\mathtt{v}$ is values. It consists of Boolean, integer, string, and unit, which is the same as nothing.
     $\mathtt{e}$ is expressions. Every expression is evaluated to values.
-    An expression can be a value, a variable, a unary operator and it operand, a binary operator and its operands, an expression application, an if expression, a let expression, a function expression, a type hole, an effect hole, a file-read, or a file-write.
+    An expression can be a value, a variable, a unary operator and its operand, a binary operator and its operands, an expression application, an if expression, a let expression, a function expression, a type hole, an effect hole, a file-read, or a file-write.
     Unary Operators $\mathtt{uop}$ and binary operators $\mathtt{bop}$ works with operands as in other programming languages.
-    $\mathtt{\tau}$ has 6 types. boolean, integer, string, unit(do nothing), any, and type-to-type.
-    $\mathtt{\epsilon}$ has 7 effects. Effects related to I/O, a do-nothing effect, an \textit{any} effect, and an effect-to-effect effect.
+    $\mathtt{\tau}$ has 6 types. Boolean, integer, string, unit(do nothing), any, and type-to-type.
+    $\mathtt{\epsilon}$ has 7 effects. Effects related to I/O, a do-nothing effect, \textit{any} effect, effect-to-effect effect.
     $\mathtt{\Gamma}$ and $\mathtt{E}$ links identifiers to its type or effect.
 
     \begin{figure}[htbp]
@@ -235,11 +235,11 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 
   \section{Semantics}
     \subsection{Evaluation Rules}
-      Figure \ref{fig:evalRules} shows the evaluation rules of $\mathbf{Titan}$.
+      The figure \ref{fig:evalRules}shows the evaluation rules of $\mathbf{Titan}$.
 
-      In the section \ref{section:syntax}, I introduced $\mathbf{Titan}$'s syntax.
+      In the section\ref{section:syntax}, I introduced $\mathbf{Titan}$'s syntax.
       I have not, however, tell you how to evaluate them.
-      In this subsection, I illustrate the rules with Figure \ref{fig:evalRules}.
+      In this subsection, I illustrate the rules with Figure\ref{fig:evalRules}.
       Each rule is related to $\mathtt{e}$ and how to evaluate them to $\mathtt{v}$.
       (\textrm{E-APP1}) and (\textrm{E-APP2}) are rules to evaluate an application expression.
       (\textrm{E-IFTRUE}), (\textrm{E-IFFALSE}), and (\textrm{E-IF}) are rules for an if expression.
@@ -307,14 +307,14 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
       \end{figure}
 
     \subsection{Type/Effect System}
-      Figure \ref{fig:typeEffectSystem} shows the type/effect system of $\mathbf{Titan}$.
+      The figure \ref{fig:typeEffectSystem}shows the type/effect system of $\mathbf{Titan}$.
 
-      According to "Types and Programming Languages" \cite{pierce:2002} type system is something that protect unintentional programs.
-      $\mathbf{Titan}$'s type system uses type system to detect errors and synthesize values.
+      According to "Types and Programming Languages" a \cite{pierce:2002} type system is something that protects unintentional programs.
+      $\mathbf{Titan}$'s type system uses a type system to detect errors and synthesize values.
 
       Effect system describes computational effects such as side effects.
       For example, it can describe reading/writing to a variable, file I/O, etc.
-      In $\mathbf{Titan}$, effect is used to compose functions related to file I/O.
+      In $\mathbf{Titan}$, the effect is used to compose functions related to file I/O.
 
       \begin{figure}[htbp]
         \begin{flushleft}
@@ -379,7 +379,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
       \end{figure}
 
   \section{Synthesis Process}\label{section:synthesisProcess}
-    Figure \ref{fig:synthesisRules} shows the synthesis rules of $\mathbf{Titan}$.
+    The figure \ref{fig:synthesisRules}shows the synthesis rules of $\mathbf{Titan}$.
 
     The actual procedure for synthesis is very simple.
     Find the part about the hole in the program.
@@ -474,7 +474,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
   In this example, unit tests define a lot of requirements.
   There are a lot of holes to fill too.
   Thus, this example has a lot of constraints to solve.
-  With ordinary machine, if $n$ is big, it cannot solve this problem in a sensible time.
+  With an ordinary machine, if $n$ is big, it cannot solve this problem in a sensible time.
 
   \begin{minted}[breaklines, linenos]{ocaml}
     (* [unit_test]s define some requirements. *)
@@ -499,29 +499,29 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
   \subsection{Problems of Examples}
   Next are problems of examples.
 
-  Simple examples like the ones presented in the subsection \ref{subsection:simple_example} can generate code in a short time, but as the number of variables that appear increases, the computation time should increase exponentially accordingly.
-  The one in the subsection \ref{subsection:complex_example} is the typical case.
+  Simple examples like the ones presented in the subsection \ref{subsection:simple_example}can generate code in a short time, but as the number of variables that appear increases, the computation time should increase exponentially accordingly.
+  The one in the subsection \ref{subsection:complex_example}is the typical case.
   This is because if there are $K$ candidates for each variable, and if $N$ variables appear, the time complexity will be $O(K^N)$.
 
   \section{Consideration}
   The contributions of this research and what needs to be done in the future are reviewed here.
 
   In this study, I found that effects can be used effectively for program synthesis.
-  If effect does not exist, I have to write $\mathtt{hole : \tau_{unit}}$ to write to standard output.
+  If an effect does not exist, I have to write $\mathtt{hole: \tau_{unit}}$ to write to standard output.
   However, in that case, the search space expands exponentially, and therefore, the search cannot be efficient in time.
   In addition, a development method called test-driven development has been gaining popularity in recent years.
   It is a method of writing tests first, and then writing code to make the tests work.
   This method and the one I propose will fit well together.
-  If this research continues to develop, it will contribute to the real world industry.
+  If this research continues to develop, it will contribute to the real-world industry.
 
   The following is a list of points that were not covered in this study.
-  The difference from simple search is small due to the simplicity of the language that can be generated, and there are few quantitative results.
+  The difference from a simple search is small due to the simplicity of the language that can be generated, and there are few quantitative results.
   The simplicity of the language that can be generated is evident from the fact that there are only five types except for the function type.
-  It also has a few syntax.
+  It also has a few syntaxes.
   In the future, I would like to see if program synthesis can be performed in the same way for languages with more complex types and syntax.
-  Since it is a simple language, the search space is small, and it is possible that it is faster to let the synthesizer search than it is to describe the types and effects.
+  Since it is a simple language, the search space is small, and it is possibly faster to let the synthesizer search than it is to describe the types and effects.
   Secondly, the lack of quantitative results is a deficiency of the study.
-  In the section \ref{section:example}, I have considered the rough speed by analyzing the amount of computation, but in practice, it is desirable to consider using quantitative data.
+  In the section\ref{section:example}, I have considered the rough speed by analyzing the amount of computation, but in practice, it is desirable to consider using quantitative data.
   This will be an issue to be addressed in future research.
 
 \chapter{Related Work}\label{chapter:relatedWork}
@@ -532,7 +532,7 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
   Enumeration is the most efficient way of searching since it overlooks nothing.
   Nevertheless, it has a trade-off.
   The search space is enormous.
-  In order to solve in realistic time, you need to prune some candidate programs.
+  To solve in realistic time, you need to prune some candidate programs.
   Several pruning techniques have been developed.
   The basic idea is to enumerate all trees and prune trees equivalent to those already explored.
   I briefly introduce two of them, top-down tree search and bottom-up tree search.
@@ -541,12 +541,12 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 
   \section{Constraint Solving}
     Constraint solving is \textit{finding an instantiation of free variables in a formula}. This requires more rigorous specification than other techniques and syntactic program restrictions which are encoded so that you can find true models for a correct program.
-    I will give you some explanations about component-based synthesis proposed by Jha et al. \cite{jha:2010}.
+    I will give you some explanations about the component-based synthesis proposed by Jha et al. \cite{jha:2010}.
     This type of synthesis encodes the language and its spec into SAT/SMT constraints precisely.
     An SMT solver like \textit{Z3} \cite{moura:2008} solves the constraints.
     A component is given in the form of a specification with an input and output pair, which are written as logical formulae.
     In other words, each component is defined as a specialized function.
-    Minimum program encoded by these functions has three attributes, which introduced by Jha et al.
+    The minimum program encoded by these functions has three attributes, which were introduced by Jha et al.
     \begin{enumerate}
         \item is well-formed
         \item uses all components without violating their respective specs
@@ -559,10 +559,10 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
     Stochastic methods use the distribution over the space of programs in the hypothesis space that is conditioned on the specification to obtain a consistent program.
     The learned distribution will lead to a better prediction rate of programs that correspond to the specification.
 
-    Figure \ref{stochastic} is an example of stochastic search.
+    The figure \ref{stochastic}is an example of a stochastic search.
     Suppose each circle is a candidate of an AST node and each arrow points to the syntactic candidates of the next node with its percentage.
-    Stochastic search technique uses the probabilities to determine what code to synthesize.
-    The technique uses code base to predict the percentages.
+    The stochastic search technique uses the probabilities to determine what code to synthesize.
+    The technique uses a code base to predict the percentages.
     \textit{STOKE} \cite{Schkufza:2016}, an implementation on program optimization uses stochastic search like this.
 
     \begin{figure}[htbp]
@@ -591,8 +591,8 @@ Chapter \ref{chapter:conclusion} concludes with a summary of the results and eva
 
     This technology is also used in Excel, which is commonly used around the world.
     The technology of transforming the text of an Excel cell is based on Gulwani's research called Flash Fill\cite{gulwani:2011}.
-    This research, which creates appropriate cells from input and output examples, connects the results of academia to make them available to end users, and won the Most Influential POPL Paper Award.
-    Polozov and Gulwani also presented FlashMeta\cite{polozov:2015}, a framework for PBE that can achieve Flash Fill-like results by simply defining DSLs.
+    This research, which creates appropriate cells from input and output examples, connects the results of academia to make them available to end-users and won the Most Influential POPL Paper Award.
+    Polozov and Gulwani also presented FlashMeta \cite{polozov:2015}, a framework for PBE that can achieve Flash Fill-like results by simply defining DSLs.
     This technology is expected to make PBE more widely used in the future.
 
   \section{Type-driven Program Synthesis}
